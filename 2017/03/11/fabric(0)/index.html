@@ -11,16 +11,16 @@
     
 
     
-    <meta name="description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62.194:443: re">
+    <meta name="description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门（最错误的决定没有之一）第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62">
 <meta property="og:type" content="article">
 <meta property="og:title" content="fabric(0)">
 <meta property="og:url" content="http://yoursite.com/2017/03/11/fabric(0)/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
-<meta property="og:description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62.194:443: re">
-<meta property="og:updated_time" content="2017-03-14T06:19:39.277Z">
+<meta property="og:description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门（最错误的决定没有之一）第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62">
+<meta property="og:updated_time" content="2017-03-14T09:42:26.017Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fabric(0)">
-<meta name="twitter:description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62.194:443: re">
+<meta name="twitter:description" content="一切参照Hyperledger Fabric V1.0– 开发者快速入门（最错误的决定没有之一）第四步 docker-compose up非常看缘分第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62">
 
     
     
@@ -46,7 +46,7 @@
 				<h1 class="site-name"><a href="/" title="Vaisy&#39;s Blog">Vaisy&#39;s Blog</a></h1>
 				<h2 class="blog-motto"></h2>
 			</div>
-			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
 			</a></div>
 			<nav class="animated">
 				<ul>
@@ -62,7 +62,7 @@
  					
 					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
 						<label>Search</label>
-						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
 						<input type="hidden" name="q" value="site:yoursite.com">
 					</form>
 					
@@ -85,25 +85,25 @@
 		<a href="/about" title="Vaisy" target="_blank" itemprop="author">Vaisy</a>
 		
   <p class="article-time">
-    <time datetime="2017-03-11T08:02:10.000Z" itemprop="datePublished"> 发表于 2017-03-11</time>
+    <time datetime="2017-03-11T08:02:10.000Z" itemprop="datePublished"> Published 2017-03-11</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
 		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
+			<strong class="toc-title">Contents</strong>
 		
 			
 		
 		</div>
 		
-		<p>一切参照<a href="http://8btc.com/article-4471-1.html" target="_blank" rel="external">Hyperledger Fabric V1.0– 开发者快速入门</a><br>第四步 docker-compose up非常看缘分<br>第一次：Get <a href="https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0" target="_blank" rel="external">https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0</a>: read tcp 10.208.29.241:37526-&gt;50.17.62.194:443: read: connection reset by peer<br>？？？get不到？？？读取链接被重置了？？<br>第二次：Tag 0.7.0 not found in repository docker.io/wandatech/fabric-ca<br>？？什么玩意儿？<br>第三次：同第一次。<br>第四次：不复制了。TLS握手超时。<br>第五次：i/o timeout<br>百度说是国家级防火墙的原因。(⊙o⊙)…(不百度也猜到了)<br>我有句mmp想了想还是不讲了，<a href="https://www.v2ex.com/t/345517" target="_blank" rel="external">解决方案</a>非常有效且感人肺腑。<br>新的error出现了<br>ERROR: for peer1  Cannot start service peer1: driver failed programming external connectivity on endpoint peer1 (39e10904e5be7d1ee4a6b663dee1b42e41de47657cae97fa9c94c937aa26b5fb): Bind for 0.0.0.0:8055 failed: port is already allocated<br>ERROR: Encountered errors while bringing up the project.<br>root@tender-Lenovo-U310:/home/tender/fabric# lsof -i:8055<br>COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME<br>docker-pr 6447 root    4u  IPv6  57826      0t0  TCP *:8055 (LISTEN)</p>
+		<p>一切参照<a href="http://8btc.com/article-4471-1.html" target="_blank" rel="external">Hyperledger Fabric V1.0– 开发者快速入门</a><br>（最错误的决定没有之一）<br>第四步 docker-compose up非常看缘分<br>第一次：Get <a href="https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0" target="_blank" rel="external">https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0</a>: read tcp 10.208.29.241:37526-&gt;50.17.62.194:443: read: connection reset by peer<br>？？？get不到？？？读取链接被重置了？？<br>第二次：Tag 0.7.0 not found in repository docker.io/wandatech/fabric-ca<br>？？什么玩意儿？<br>第三次：同第一次。<br>第四次：不复制了。TLS握手超时。<br>第五次：i/o timeout<br>百度说是国家级防火墙的原因。(⊙o⊙)…(不百度也猜到了)<br>我有句mmp想了想还是不讲了，<a href="https://www.v2ex.com/t/345517" target="_blank" rel="external">解决方案</a>非常有效且感人肺腑。<br>新的error出现了<br>ERROR: for peer1  Cannot start service peer1: driver failed programming external connectivity on endpoint peer1 (39e10904e5be7d1ee4a6b663dee1b42e41de47657cae97fa9c94c937aa26b5fb): Bind for 0.0.0.0:8055 failed: port is already allocated<br>ERROR: Encountered errors while bringing up the project.<br>root@tender-Lenovo-U310:/home/tender/fabric# lsof -i:8055<br>COMMAND    PID USER   FD   TYPE DEVICE SIZE/OFF NODE NAME<br>docker-pr 6447 root    4u  IPv6  57826      0t0  TCP *:8055 (LISTEN)</p>
 <p>kill-9没用的。会自动重启。重启docker也没用。<br>而且查不出来docker-pr是什么玩意儿。stackoverflow查不到答案<br>我也很绝望呢。</p>
 <p>非常二逼的去docker-compose里把peer1从8055改8052；peer2从8056改8057；<br>问题解决了也并没有开心一点点<br>总之系统连着崩溃两天了。peer成功加入了；系统也死机了；我在以最慢的速度敲这两行字。<br>好在崩溃的不彻底，及时exitting了；<br>第一次error:peer0             | 2017-03-13 04:20:02.279 UTC [chaincode] ExecuteWithErrorFilter -&gt; ERRO 350 ExecuteWithErrorFilter lccc error: Failed to deploy chaincode spec(deploy attempted but a chaincode with same name running lccc:0.7.0-snapshot-c7b3fe0/myc1)<br>同名链上代码在运行；<br>第二次error:peer0             | 2017-03-13 04:20:02.280 UTC [chaincode] ExecuteWithErrorFilter -&gt; ERRO 357 ExecuteWithErrorFilter escc error: Failed to deploy chaincode spec(deploy attempted but a chaincode with same name running escc:0.7.0-snapshot-c7b3fe0/myc1)<br>第三次error:peer0             | 2017-03-13 04:20:02.281 UTC [chaincode] ExecuteWithErrorFilter -&gt; ERRO 35f ExecuteWithErrorFilter vscc error: Failed to deploy chaincode spec(deploy attempted but a chaincode with same name running vscc:0.7.0-snapshot-c7b3fe0/myc1)<br>第四次 peer1同第一次349 lccc；第五次 peer1同第二次 352 escc；第六次同第三次 359 spec；<br>第七次error:peer2             | 2017-03-13 04:20:20.150 UTC [gossip-172.19.0.5:7051] getOrgOfPeer -&gt; ERRO 2da Failed getting certificate by PKIid: [49 55 50 46 49 57 46 48 46 52 58 55 48 53 49] : PkiID wasn’t found<br>第八次error:peer2             | 2017-03-13 04:20:21.072 UTC [gossip-172.19.0.5:7051] getOrgOfPeer -&gt; ERRO 2de Failed getting certificate by PKIid: [49 55 50 46 49 57 46 48 46 52 58 55 48 53 49] : PkiID wasn’t found<br>第九次error：peer1             | 2017-03-13 04:20:22.930 UTC [gossip-172.19.0.4:7051] getOrgOfPeer -&gt; ERRO 36a Failed getting certificate by PKIid: [49 55 50 46 49 57 46 48 46 53 58 55 48 53 49] : PkiID wasn’t found<br>第十次 peer2同第一次34e lccc; 第十一次 peer2同第二次 355escc;第十二次同第三次 35c spec；<br>相同error同7,8,9继续：1,2,2,2,1， 1,2,2,2,1，   1,1,1,1,2   2,1,2,1,2</p>
 <p>你没发现吗 获取不到的 只有peer1和peer2</p>
 <p>最终结果：peer0             | Killed     peer0 exited with code 137<br>命运的齿轮又转回了起点。</p>
-<p>删除/var/lib/docker/networks里的db文件之后世界清净了。<br>别猜我怎么想了。这个套路你猜不到的。<br>服务重启过，docker重装过，容器早就删空了 你说呢。<br>/etc/default底下没啥；etc/init.d底下也没啥 ubuntu根本就没有iptables<br>占端口的是docker-proxy proto 又不是外人，明摆着docker-daemon意外关闭的锅 github<br>/var/lib/docker底下就那几个文件 想一想除了network别的好像也没这本事 索性清空 废了大不了重装。<br>github没有答案；stackoverflow<br>success。</p>
+<p>删除/var/lib/docker/networks里的db文件之后世界清净了。<br>别猜我怎么想了。这个套路你猜不到的。<br>服务重启过，docker重装过，容器早就删空了 你说呢。<br>/etc/default底下没啥；etc/init.d底下也没啥 ubuntu根本就没有iptables<br>占端口的是docker-proxy proto 又不是外人，明摆着docker-daemon意外关闭的锅 github<br>/var/lib/docker底下就那几个文件 想一想除了network别的好像也没这本事 索性清空 废了大不了重装。<br>success!<br>github的官方issue没有答案；stackoverflow没有答案。答案是inspiration。。。<br>世界真是离奇。</p>
 <p>peer1             | 2017-03-13 15:40:56.956 UTC [txvalidator] Validate -&gt; ERRO 1d6 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
 <p>peer2             | 2017-03-13 15:40:56.975 UTC [txvalidator] Validate -&gt; ERRO 1d7 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
 <p>peer0             | 2017-03-13 15:40:56.976 UTC [txvalidator] Validate -&gt; ERRO 1d4 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
@@ -148,17 +148,17 @@
 	
 
 </div>  
-      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
 
   <div id="toc" class="toc-aside">
-  <strong class="toc-title">文章目录</strong>
+  <strong class="toc-title">Contents</strong>
  
  
  
   </div>
 
 <div id="asidepart">
-<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
 <aside class="clearfix">
 
   
@@ -166,7 +166,7 @@
   
 
   <div class="linkslist">
-  <p class="asidetitle">友情链接</p>
+  <p class="asidetitle">Links</p>
     <ul>
         
           <li>
@@ -398,7 +398,7 @@ $(document).ready(function(){
 <!-- Totop Begin -->
 
 	<div id="totop">
-	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
 	</div>
 	<script src="/js/totop.js"></script>
 
