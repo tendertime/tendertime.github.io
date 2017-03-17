@@ -1,4 +1,7 @@
-var pingpong={}
+var pingpong={
+	scoreA:0,
+	scoreB:0
+}
 var KEY={
 	UP:38,
 	DOWN:40,
@@ -33,14 +36,16 @@ function moveBall(){
 	if(ball.y+ball.speed*ball.directionY>playgroundHeight)
 	{
 		ball.directionY=-1;
-	}
+	}//底边
 	if(ball.y+ball.speed*ball.directionY<0)
 	{
 		ball.directionY=1;
-	}
+	}//顶边
 	if(ball.x+ball.speed*ball.directionX>playgroundWidth)
 	{
 		//玩家B丢分
+		pingpong.scoreA++;
+		$("#scoreA").html(pingpong.scoreA);
 		ball.x=250;
 		ball.y=100;;
 		$("#ball").css({
@@ -51,6 +56,9 @@ function moveBall(){
 	}
 	if(ball.x+ball.speed*ball.directionX<0)
 	{
+		//玩家A丢分
+		pingpong.scoreB++;
+		$("#scoreB").html(pingpong.scoreB);
 		ball.x=150;
 		ball.y=100;;
 		$("#ball").css({
@@ -71,8 +79,8 @@ function moveBall(){
 			{
 				ball.directionX=1;
 			}
-	}
-	var paddleBX=parseInt($("#paddleB").css("left"))+parseInt($("#paddleB").css("width"));
+	}//球拍检测
+	var paddleBX=parseInt($("#paddleB").css("left"));
 	var paddleBYBottom=parseInt($("#paddleB").css("top"))+parseInt($("#paddleB").css("height"));
 	var paddleBYTop=parseInt($("#paddleB").css("top"));
 	if(ball.x+ball.speed*ball.directionX>=paddleBX)
@@ -82,7 +90,7 @@ function moveBall(){
 			{
 				ball.directionX=-1;
 			}
-	}
+	}//移动球
 	$("#ball").css({
 		"left":ball.x,
 		"top":ball.y
