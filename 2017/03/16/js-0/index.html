@@ -11,22 +11,16 @@
     
 
     
-    <meta name="description" content="为了大作业开始学js。必须会非常顺利。我还不是零基础。我毕竟还是个工科死宅。等我做完会把它整理进来。权当做纪念吧。那个求开放内测的人，如果你找得到，我不知道这样算不算晚。
-
-DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘">
+    <meta name="description" content="DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘按下的监听来获取的。123456$(document).keydown(function(e)&amp;#123;		pingpong.pressedKeys[e.which]=t">
 <meta property="og:type" content="article">
 <meta property="og:title" content="js大作业(0)">
 <meta property="og:url" content="http://yoursite.com/2017/03/16/js-0/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
-<meta property="og:description" content="为了大作业开始学js。必须会非常顺利。我还不是零基础。我毕竟还是个工科死宅。等我做完会把它整理进来。权当做纪念吧。那个求开放内测的人，如果你找得到，我不知道这样算不算晚。
-
-DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘">
-<meta property="og:updated_time" content="2017-03-18T15:16:32.951Z">
+<meta property="og:description" content="DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘按下的监听来获取的。123456$(document).keydown(function(e)&amp;#123;		pingpong.pressedKeys[e.which]=t">
+<meta property="og:updated_time" content="2017-05-03T15:17:36.439Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="js大作业(0)">
-<meta name="twitter:description" content="为了大作业开始学js。必须会非常顺利。我还不是零基础。我毕竟还是个工科死宅。等我做完会把它整理进来。权当做纪念吧。那个求开放内测的人，如果你找得到，我不知道这样算不算晚。
-
-DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘">
+<meta name="twitter:description" content="DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。通过setInterval函数获取用户的输入 从而允许多用户操作。parseInt把字符串化为整型。用户输入是通过对键盘按下的监听来获取的。123456$(document).keydown(function(e)&amp;#123;		pingpong.pressedKeys[e.which]=t">
 
     
     
@@ -104,15 +98,14 @@ DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半�
 		
 		</div>
 		
-		<p>为了大作业开始学js。必须会非常顺利。<br>我还不是零基础。我毕竟还是个工科死宅。<br>等我做完会把它整理进来。权当做纪念吧。<br>那个求开放内测的人，如果你找得到，我不知道这样算不算晚。</p>
-<hr>
+		<hr>
 <p>DAY1:在看HTML5游戏开发实战。<br>手写了一遍乒乓球。自己玩了半小时。实话讲，和本科学的MFC差别不大。<br>通过setInterval函数获取用户的输入 从而允许多用户操作。<br>parseInt把字符串化为整型。<br>用户输入是通过对键盘按下的监听来获取的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$(document).keydown(function(e)&#123;</div><div class="line">		pingpong.pressedKeys[e.which]=true;</div><div class="line">	&#125;);</div><div class="line">	$(document).keyup(function(e)&#123;</div><div class="line">		pingpong.pressedKeys[e.which]=false;</div><div class="line">	&#125;);//e.which就是被按下的键。</div></pre></td></tr></table></figure></p>
 <hr>
-<p>DAY2:同一本书。这节的重点在css<br>transform和transition的使用。<br>toggle函数切换类<br>z-index用于控制元素可见性（就当页面是3D的，这个是z轴坐标）<br>z-index大的会放在前面。perspective提供透视效果。opacity是不透明度。<br>chrome没问题但是ff会有一些不兼容 hin尴尬啊（因为我找了很久我错哪了）<br>然后朋友提议我善用webstorm，任意切换。<br>精灵表。这个名字很好听啊。在内存中加载了整个图像纹理，按需要显示其中一部分。<br>举例：.cardAQ{background-position:-880px,0;}这样裁剪得到单张纸牌。<br>但是实在不好意思这个根本找不到素材啊啊 我也很尴尬<br>这节剩下的部分我就看会儿书好吧。天地良心我也没打算拿前端当饭吃。<br>ready函数：<br>洗牌；（自己定义shuffle函数）<br>放牌；（循环求模）<br>获取图案并将图案写入DOM；<br>监听点击事件；</p>
-<p>点击函数：<br>两张牌就退出；<br>翻转纸牌；<br>这会儿要是两张牌了，加个定时就去检查；</p>
+<p>DAY2:同一本书。这节的重点在css<br>transform和transition的使用。<br>toggle函数切换类<br>z-index用于控制元素可见性（就当页面是3D的，这个是z轴坐标）<br>z-index大的会放在前面。perspective提供透视效果。opacity是不透明度。<br>chrome没问题但是ff会有一些不兼容 hin尴尬啊（因为我找了很久我错哪了）<br>然后朋友提议我善用webstorm，任意切换。<br>精灵表。这个名字很好听啊。在内存中加载了整个图像纹理，按需要显示其中一部分。<br>举例：.cardAQ{background-position:-880px,0;}这样裁剪得到单张纸牌。<br>但是实在不好意思这个根本找不到素材啊啊 我也很尴尬<br>这节剩下的部分我就看会儿书好吧。天地良心我也没打算拿前端当饭吃。<br>ready函数：<br>洗牌；（自己定义shuffle函数）<br>放牌；（循环求模）<br>获取图案并将图案写入DOM；<br>监听点击事件；  </p>
+<p>点击函数：<br>两张牌就退出；<br>翻转纸牌；<br>这会儿要是两张牌了，加个定时就去检查；  </p>
 <p>检查（翻开两张牌时）：<br>一样就都remove 否则翻转回来；</p>
-<p>图案检测函数：<br>淡出函数：</p>
-<p>仅此而已。<br>之后开始以canvas为主。</p>
+<p>图案检测函数：<br>淡出函数：  </p>
+<p>仅此而已。<br>之后开始以canvas为主。<br>后来打消了做游戏的念头 就此打住了.  </p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -138,6 +131,14 @@ DAY1:在看HTML5游戏开发实战。手写了一遍乒乓球。自己玩了半�
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/03/19/js-1/" title="js大作业(1)">
+  <strong>上一篇：</strong><br/>
+  <span>
+  js大作业(1)</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2017/03/11/fabric(0)/"  title="fabric(0)">

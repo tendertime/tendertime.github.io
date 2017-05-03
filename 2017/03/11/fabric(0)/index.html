@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/03/11/fabric(0)/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="一切用官方的。docker-compose up由于国家级防火墙的原因会出问题。第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62.194:443: read: connection reset b">
-<meta property="og:updated_time" content="2017-03-16T11:59:28.136Z">
+<meta property="og:updated_time" content="2017-05-03T15:14:41.283Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="fabric(0)">
 <meta name="twitter:description" content="一切用官方的。docker-compose up由于国家级防火墙的原因会出问题。第一次：Get https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0: read tcp 10.208.29.241:37526-&amp;gt;50.17.62.194:443: read: connection reset b">
@@ -98,15 +98,15 @@
 		
 		</div>
 		
-		<p>一切用<a href="http://hyperledger-fabric.readthedocs.io/en/latest/asset_setup.html" target="_blank" rel="external">官方的</a>。<br>docker-compose up由于国家级防火墙的原因会出问题。<br>第一次：Get <a href="https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0" target="_blank" rel="external">https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0</a>: read tcp 10.208.29.241:37526-&gt;50.17.62.194:443: read: connection reset by peer<br>？？？get不到？？？读取链接被重置了？？<br>第二次：Tag 0.7.0 not found in repository docker.io/wandatech/fabric-ca<br>？？什么玩意儿？<br>第三次：同第一次。<br>第四次：不复制了。TLS握手超时。<br>第五次：i/o timeout<br>我有句mmp想了想还是不讲了。<br><a href="https://www.v2ex.com/t/345517" target="_blank" rel="external">解决方案</a>非常有效且感人肺腑。</p>
-<p>会有两处出现问题</p>
-<h2 id="docker强行关闭"><a href="#docker强行关闭" class="headerlink" title="docker强行关闭"></a>docker强行关闭</h2><p>是的如果你习惯了用ctrl+C结束进程你就会比我还蠢。<br>当然我现在更暴力我会另开一个docker stop xx然后两边都ctrl+D<br>当你犯下大错时，就会发现github和stackoverflow都没有解决方案。<br>是的端口冲突。关了进程还会再开；重写端口会出错；删了容器也好像幽灵一样。<br>这个端口已经被分配了，你不能用了。但是执着如我，对吧。<br>/etc/default底下没啥 etc/init.d底下也没啥 ubuntu根本就没有iptables<br>占端口的是docker-proxy proto 又不是外人，明摆着docker-daemon意外关闭的锅<br>删除/var/lib/docker/networks里的db文件之后世界清净了。<br>服务重启过，docker重装过，容器早就删空了 你说呢。<br>/var/lib/docker底下就那几个文件 想一想除了network别的好像也没这本事 索性清空 废了大不了重装。<br>success!</p>
-<h2 id="参照Hyperledger-Fabric-V1-0–-开发者快速入门"><a href="#参照Hyperledger-Fabric-V1-0–-开发者快速入门" class="headerlink" title="参照Hyperledger Fabric V1.0– 开发者快速入门"></a>参照<a href="http://8btc.com/article-4471-1.html" target="_blank" rel="external">Hyperledger Fabric V1.0– 开发者快速入门</a></h2><p>（最错误的决定没有之一）</p>
-<p>peer1             | 2017-03-13 15:40:56.956 UTC [txvalidator] Validate -&gt; ERRO 1d6 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
-<p>peer2             | 2017-03-13 15:40:56.975 UTC [txvalidator] Validate -&gt; ERRO 1d7 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
-<p>peer0             | 2017-03-13 15:40:56.976 UTC [txvalidator] Validate -&gt; ERRO 1d4 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION</p>
-<p>头类型有问题。<br>后来想了想，这个教程太老了，镜像是五周前。别看了。</p>
-<p>教训有三。<br>1:没事不要对论坛好奇，看新闻可以，教程靠谱程度堪忧；以官方为准。<br>2:钝刀子坑死砍柴工了。先熟悉docker，再考虑下一步的事情。<br>3:别人靠智慧；我靠的可能是直觉。以后肯定不当coder，像我这样可能就删库跑路了。</p>
+		<p>一切用<a href="http://hyperledger-fabric.readthedocs.io/en/latest/asset_setup.html" target="_blank" rel="external">官方的</a>。<br>docker-compose up由于国家级防火墙的原因会出问题。<br>第一次：Get <a href="https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0" target="_blank" rel="external">https://registry-1.docker.io/v1/repositories/wandatech/fabric-ca/tags/0.7.0</a>: read tcp 10.208.29.241:37526-&gt;50.17.62.194:443: read: connection reset by peer<br>？？？get不到？？？读取链接被重置了？？<br>第二次：Tag 0.7.0 not found in repository docker.io/wandatech/fabric-ca<br>？？什么玩意儿？<br>第三次：同第一次。<br>第四次：不复制了。TLS握手超时。<br>第五次：i/o timeout<br>我有句mmp想了想还是不讲了。<br><a href="https://www.v2ex.com/t/345517" target="_blank" rel="external">解决方案</a>非常有效且感人肺腑。  </p>
+<p>会有两处出现问题  </p>
+<h2 id="docker强行关闭"><a href="#docker强行关闭" class="headerlink" title="docker强行关闭"></a>docker强行关闭</h2><p>是的如果你习惯了用ctrl+C结束进程你就会比我还蠢。<br>当然我现在更暴力我会另开一个docker stop xx然后两边都ctrl+D<br>当你犯下大错时，就会发现github和stackoverflow都没有解决方案。<br>是的端口冲突。关了进程还会再开；重写端口会出错；删了容器也好像幽灵一样。<br>这个端口已经被分配了，你不能用了。但是执着如我，对吧。<br>/etc/default底下没啥 etc/init.d底下也没啥 ubuntu根本就没有iptables<br>占端口的是docker-proxy proto 又不是外人，明摆着docker-daemon意外关闭的锅<br>删除/var/lib/docker/networks里的db文件之后世界清净了。<br>服务重启过，docker重装过，容器早就删空了 你说呢。<br>/var/lib/docker底下就那几个文件 想一想除了network别的好像也没这本事 索性清空 废了大不了重装。<br>success!  </p>
+<h2 id="参照Hyperledger-Fabric-V1-0–-开发者快速入门"><a href="#参照Hyperledger-Fabric-V1-0–-开发者快速入门" class="headerlink" title="参照Hyperledger Fabric V1.0– 开发者快速入门"></a>参照<a href="http://8btc.com/article-4471-1.html" target="_blank" rel="external">Hyperledger Fabric V1.0– 开发者快速入门</a></h2><p>（最错误的决定没有之一）  </p>
+<p>peer1             | 2017-03-13 15:40:56.956 UTC [txvalidator] Validate -&gt; ERRO 1d6 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION </p>
+<p>peer2             | 2017-03-13 15:40:56.975 UTC [txvalidator] Validate -&gt; ERRO 1d7 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION  </p>
+<p>peer0             | 2017-03-13 15:40:56.976 UTC [txvalidator] Validate -&gt; ERRO 1d4 Invalid transaction with index 0, error invalid header type ORDERER_TRANSACTION  </p>
+<p>头类型有问题。<br>后来想了想，这个教程太老了，镜像是五周前。别看了。  </p>
+<p>教训有三。<br>1:没事不要对论坛好奇，看新闻可以，教程靠谱程度堪忧；以官方为准。<br>2:钝刀子坑死砍柴工了。先熟悉docker，再考虑下一步的事情。<br>3:别人靠智慧；我靠的可能是直觉。以后肯定不当coder，像我这样可能就删库跑路了。  </p>
 <p>下一步会好好看docker。</p>
   
 	</div>
