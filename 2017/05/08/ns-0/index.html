@@ -1,0 +1,442 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>ns(0) | Vaisy&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Vaisy">
+    
+
+    
+    <meta name="description" content="开始着手做实验了.打算先从ns3入手,毕竟c++和py才是真爱,下个阶段考虑OMNET吧.我想先把路由协议啃下来,因为一切都是基于路由表所维护的SPT来得到的,我该怎么拿到我的SPT呢?
+cisco的关于OSPF的文档:世上有两种邻居:已经同步的,等待同步的.收到更新包的时候,将把收到的信息放到链路状态数据库LSDB中.(OSPF的算法是最短路径优先,即SPFA)进而得到一个以自己为root的最短">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ns(0)">
+<meta property="og:url" content="http://yoursite.com/2017/05/08/ns-0/index.html">
+<meta property="og:site_name" content="Vaisy's Blog">
+<meta property="og:description" content="开始着手做实验了.打算先从ns3入手,毕竟c++和py才是真爱,下个阶段考虑OMNET吧.我想先把路由协议啃下来,因为一切都是基于路由表所维护的SPT来得到的,我该怎么拿到我的SPT呢?
+cisco的关于OSPF的文档:世上有两种邻居:已经同步的,等待同步的.收到更新包的时候,将把收到的信息放到链路状态数据库LSDB中.(OSPF的算法是最短路径优先,即SPFA)进而得到一个以自己为root的最短">
+<meta property="og:updated_time" content="2017-05-12T14:19:03.765Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ns(0)">
+<meta name="twitter:description" content="开始着手做实验了.打算先从ns3入手,毕竟c++和py才是真爱,下个阶段考虑OMNET吧.我想先把路由协议啃下来,因为一切都是基于路由表所维护的SPT来得到的,我该怎么拿到我的SPT呢?
+cisco的关于OSPF的文档:世上有两种邻居:已经同步的,等待同步的.收到更新包的时候,将把收到的信息放到链路状态数据库LSDB中.(OSPF的算法是最短路径优先,即SPFA)进而得到一个以自己为root的最短">
+
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Vaisy&#39;s Blog" title="Vaisy&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Vaisy&#39;s Blog">Vaisy&#39;s Blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/05/08/ns-0/" title="ns(0)" itemprop="url">ns(0)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Vaisy" target="_blank" itemprop="author">Vaisy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-08T10:29:04.000Z" itemprop="datePublished"> Published 2017-05-08</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cisco的关于OSPF的文档"><span class="toc-number">1.</span> <span class="toc-text">cisco的关于OSPF的文档:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NS3的拓扑相关"><span class="toc-number">2.</span> <span class="toc-text">NS3的拓扑相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ns3的套路"><span class="toc-number">3.</span> <span class="toc-text">ns3的套路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ndnsim的套路"><span class="toc-number">4.</span> <span class="toc-text">ndnsim的套路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#顺下来的思路"><span class="toc-number">5.</span> <span class="toc-text">顺下来的思路</span></a></li></ol>
+		
+		</div>
+		
+		<p>开始着手做实验了.打算先从ns3入手,毕竟c++和py才是真爱,下个阶段考虑OMNET吧.<br>我想先把路由协议啃下来,因为一切都是基于路由表所维护的SPT来得到的,我该怎么拿到我的SPT呢?</p>
+<h2 id="cisco的关于OSPF的文档"><a href="#cisco的关于OSPF的文档" class="headerlink" title="cisco的关于OSPF的文档:"></a>cisco的关于OSPF的文档:</h2><p>世上有两种邻居:已经同步的,等待同步的.<br>收到更新包的时候,将把收到的信息放到链路状态数据库LSDB中.<br>(OSPF的算法是最短路径优先,即SPFA)<br>进而得到一个以自己为root的最短最优路径到路由表中.<br>OSPF维护三张表:邻居表,拓扑表,路由表.<br>收到更新包时,查看LSDB中是否有该路由,没有则添加并返回确认.并洪泛给自己的邻居,运行SPF更新路由表<br>有则比较,序列号一致则忽略,序列号不同则保留(序列号越大,LSA越新鲜)<br>报文类型:<br>hello:建立连接;<br>Database:数据库描述,包含LSA的摘要<br>LS req:请求未知的LSA<br>LS update:更新LSA<br>LS ack:确认更新</p>
+<p>建立连接的过程:<br>初始状态为down,广播hello后进入init,收到hello的将其添加到邻居表并回复hello.进入双向阶段.<br>进入exstart状态,routerID较大的路由器为主,另一方为从.进入exchange交互状态.<br>开始loading加载状态.同步数据库.同步完成后进入完全状态,实现邻接.(泛洪仅限于邻接关系).<br>至于优先级:一个广播域里,routerID最大的就是DR,更改优先级也无法抢占.更换DR需要前任宕掉.</p>
+<h2 id="NS3的拓扑相关"><a href="#NS3的拓扑相关" class="headerlink" title="NS3的拓扑相关"></a>NS3的拓扑相关</h2><p><a href="https://www.nsnam.org/docs/release/3.19/doxygen/group__topology.html" target="_blank" rel="external">官网地址</a><br>言简意赅:第一步使用生成器得到拓扑.第二部用该拓扑建立仿真.<br>ns3的拓扑生成器有三种:orbis,inet,rockfuel<br>拓扑生成器设计成基于路由器级(internet router level)或基于自治系统级(autonomous system level)。前者，节点表示路由器，连线表示路由器间存在链路；后者，节点表示自治系统，连线表示自治系统间存在BGP(Border Gateway Protocol​, 边界网关协议​)对等连接。Orbis同时支持路由器和自治系统级，而Inet只支持自治系统级。<br>主流的网络拓扑模型主要有随机型、层次型和幂律型：<br>(1)随机型，即认为网络拓扑图处于一个完全无序的状态,在大尺度上是均一的最早的随机模型是由Waxman提出来的。Waxman认为节点之间的连接概率与其距离相关,服从泊松分布,距离越近,概率越大。<br>(2)层次型，来自对网络结构所具有的层次特征的认识，在同一层上的节点出度接近，不同层间节点出度差别很大。对同一层上的节点布置借用Waxman模型方法。<br>(3)幂律型，1999年，Faloutsos等人对NLANR(National Lab for Applied Network Research)在1997-1998年间的3份BGP数据以及1995年的一份tracerouter测量数据进行分析,发现网络拓扑中存在着幂律规律(即网络的度度分布服从幂律Power Law分布)。(以上内容来自2014年8月,待考证)<br>inet产生的数据格式应是:第一行:节点数,连接数;其后nodes行描述节点位置;再其后links行描述连接的两点及连接的权重.</p>
+<h2 id="ns3的套路"><a href="#ns3的套路" class="headerlink" title="ns3的套路"></a>ns3的套路</h2><p>文档Doxygen维护.它有自己的源码管理系统,从那里下载得到源码,使用脚本完成下载和编译;<br>waf算是轻量级的make;<br>一些常用类:<br>NodeContainer类(节点):定义节点.<br>PointToPointHelper类(设备):定义时延数据速率等创建PointToPointNetDevices和wirePointToPointChannel对象.<br>NetDeviceContainer类(服务):<br>InternetStackHelper:协议栈<br>Ipv4AddressHelper:分配IPV4的地址<br>Application类:UdpEchoServer类;UdpEchoClient类;<br>Simulator类:运行完之后务必记得清理Destroy<br>而trace-&gt;pcap格式-&gt;分析器得结果<br>整体看下来,模块不算太多.</p>
+<p>然后是一个巨大的todolist各种欢快的成员:<br>确保写入字节的:gcc环境下宏可变时需要(好了目测不需要)<br>全局拓扑管理器实验用例(验证拓扑建立的)<br>主函数:分布完成后开启本段落??<br>邻居是否为可用目标<br>wifi管理;CSMA相关;LTE相关;WiMAX相关<br>BUG调试;处理Ipv6;仿真:时间;<br>数据包;添加目的地址;协议版本 获取mac地址<br>路由表(决定什么时间某路由可用)<br>一系列的检查和丢弃…(整个DSR目前都似乎不支持吧)</p>
+<p>有一个巨大的module列表:<br>关于ipv6的 ping6的(类ping) radvd的(类dhcp)<br>关于AODV路由协议的(按需交换路由信息 感觉像是线段树的lazy tag)</p>
+<ul>
+<li>应用部分:<br>流生成器(开关模式/最大字节模式)<br>udpclientServer和UdpEcho V4ping<br>BRITE建拓扑<br>桥接网络设备;CSMA相关; click是什么?? 仿真配置信息 可以改变的常量.</li>
+<li><p>内核部分(看到内核就懒得看了 因为基本不用改):<br>属性;调用;命令行;debug;随机变量;事件(仿真\触发\时间\输出)<br>DSDV路由,DSR路由;模型;设备;<br>因特网部分 arp概览;全局路由;协议模型;v4和v6的列表 协议 静态路由 tcp udp<br>类型:属性;输出;全局变量;<br>LTE模型;mesh设备;</p>
+</li>
+<li><p>网络部分<br>地址;信道;数据率;错误模型;设备;包;包性能;队列;套接字;<br>OF交换 P2P相关 传播模型 分支模型 网络动画?? 向量路由 OLSR路由</p>
+</li>
+</ul>
+<p>静态模块:拓扑导入 tap桥接 数据的汇集和导出<br>检验:wimax模型 虚拟设备虚拟器等等</p>
+<p>好像有点过于底层了?<br>因为考虑到并不想操心这么多无关紧要的事情,所以用了基于ns3的ndnsim.<br>套路一毛一样,我觉得主要贡献就是给ndn建模.你也看出来了啊,ns3是普适性很强的网络模型.</p>
+<h2 id="ndnsim的套路"><a href="#ndnsim的套路" class="headerlink" title="ndnsim的套路"></a>ndnsim的套路</h2><p>分producer类和consumer类分布配置.<br>producer用来用虚拟的数据包来满足兴趣;<br>FIB我可以用默认路由,没有问题.(实话讲,NDN的路由迄今都是靠OSPF衍生物吧)<br>我建议的思路是:<a href="http://ndnsim.net/2.3/examples.html" target="_blank" rel="external">场景介绍</a>,先看这个<br>在找最关心的两件事:1.拓扑导入;2.存储策略.<br>第一件事:<br>用全局拓扑控制器来写FIB?<br>AnnotatedTopologyReader或者rockfuel.直接读取拓扑文件.<br>以目前的估计是要用AnnotatedTopologyReader(因为样例一直在用它)<br>大意是说R是rockfuel拓扑专用,加了权,A的普适性比较好<br><a href="http://ndnsim.net/2.3/doxygen/classns3_1_1AnnotatedTopologyReader.html" target="_blank" rel="external">AnnotatedTopologyReader</a><br>首先它是个类. 构造函数包括了路径和坐标范围<br>read方法:打开输入流,读取拓扑文件.返回节点的容器.</p>
+<ul>
+<li>getnodes方法</li>
+<li>getlink方法</li>
+<li>assignipv4address</li>
+<li>SetBoundingBox():节点位置边界;</li>
+<li>SetMobilityModel()</li>
+<li>ApplyOspfMetric()</li>
+<li>SaveTopology()</li>
+<li>SaveGraphviz()//注意,存的是dot文件</li>
+<li>CreateNode()//注意,此处有重载.引入路径和个数,位置可选.</li>
+<li>ApplySettings()<br>注意:nodes can be accessed by name using Names::Find<node> (“nodename”) call, as in the above example. For this purpose,:ndnsim:AnnotatedTopologyReader automatically registers all created nodes with names specified in topology file.</node></li>
+</ul>
+<p>第二件事:直接看<a href="http://ndnsim.net/2.3/doxygen/group__ndn-cs.html" target="_blank" rel="external">缓存</a><br>然后就会看到CS类;就会看到Add等等一系列方法;<br>晚安.<br>我想想ContentStoreImpl和ContentStore有什么区别…除了一个getpolicy之外连方法都一样</p>
+<p>再顺便说一句!它给的git的那个仿真场景…那就是个目录啊!!!一无所有的目录</p>
+<h2 id="顺下来的思路"><a href="#顺下来的思路" class="headerlink" title="顺下来的思路"></a>顺下来的思路</h2><p>直接照着examples写cpp文件<br>拓扑用AnnotatedTopologyReader读取.自己定义内容的生成和请求分布.<br>然后调用全局拓扑管理器,在这个地方会用Dijkstra计算SPT,填进FIB去.<br>那么应该就是在这个地方:<br>计算好SPT后为特定的节点调用CS的add方法设置缓存.<br>现在问题全都解决了.下一篇内容:搭环境.</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/05/08/ns-0/" data-title="ns(0) | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/04/23/js-2/"  title="js大作业(2)">
+ <strong>下一篇：</strong><br/> 
+ <span>js大作业(2)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#cisco的关于OSPF的文档"><span class="toc-number">1.</span> <span class="toc-text">cisco的关于OSPF的文档:</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#NS3的拓扑相关"><span class="toc-number">2.</span> <span class="toc-text">NS3的拓扑相关</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ns3的套路"><span class="toc-number">3.</span> <span class="toc-text">ns3的套路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ndnsim的套路"><span class="toc-number">4.</span> <span class="toc-text">ndnsim的套路</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#顺下来的思路"><span class="toc-number">5.</span> <span class="toc-text">顺下来的思路</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://leetcode.com/" target="_blank" title="Leetcode">Leetcode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.hihocoder.com/" target="_blank" title="hihocoder">hihocoder</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Vaisy. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/3225308807" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:vaisy@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Vaisy">Vaisy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
