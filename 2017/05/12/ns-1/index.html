@@ -19,7 +19,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="严格按官网来.第一个坑就会出现:
 install boost自己去boost的官网下载编译.一切完成以后再重启:123456789The Boost C++ Libraries were successfully built!The following directory should be added to compiler include paths:    /home/tender/ndnS">
-<meta property="og:updated_time" content="2017-05-13T15:10:44.914Z">
+<meta property="og:updated_time" content="2017-05-14T15:32:34.937Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(1)">
 <meta name="twitter:description" content="严格按官网来.第一个坑就会出现:
@@ -109,8 +109,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 <p>然后各种正常 嗯</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">---- Summary of optional NS-3 features:</div><div class="line">Build profile                 : debug</div><div class="line">Build directory               : </div><div class="line">Python Bindings               : not enabled (PyBindGen version not correct and newer version could not be retrieved)</div><div class="line">BRITE Integration             : not enabled (BRITE not enabled (see option --with-brite))</div><div class="line">NS-3 Click Integration        : not enabled (nsclick not enabled (see option --with-nsclick))</div><div class="line">GtkConfigStore                : not enabled (library &apos;gtk+-2.0 &gt;= 2.12&apos; not found)</div><div class="line">XmlIo                         : not enabled (library &apos;libxml-2.0 &gt;= 2.7&apos; not found)</div><div class="line">Threading Primitives          : enabled</div><div class="line">Real Time Simulator           : enabled</div><div class="line">File descriptor NetDevice     : enabled</div><div class="line">Tap FdNetDevice               : enabled</div><div class="line">Emulation FdNetDevice         : enabled</div><div class="line">PlanetLab FdNetDevice         : not enabled (PlanetLab operating system not detected (see option --force-planetlab))</div><div class="line">Network Simulation Cradle     : not enabled (NSC not found (see option --with-nsc))</div><div class="line">MPI Support                   : not enabled (option --enable-mpi not selected)</div><div class="line">ndnSIM                        : enabled</div><div class="line">NS-3 OpenFlow Integration     : not enabled (OpenFlow not enabled (see option --with-openflow))</div><div class="line">SQlite stats data output      : enabled</div><div class="line">Tap Bridge                    : enabled</div><div class="line">PyViz visualizer              : not enabled (Python Bindings are needed but not enabled)</div><div class="line">Use sudo to set suid bit      : not enabled (option --enable-sudo not selected)</div><div class="line">Build tests                   : not enabled (defaults to disabled)</div><div class="line">Build examples                : enabled</div><div class="line">GNU Scientific Library (GSL)  : not enabled (GSL not found)</div><div class="line">&apos;configure&apos; finished successfully (10.225s)</div></pre></td></tr></table></figure>
 <p>抓重点:gtk和libxml是找不到的;pybindgen是版本不对的<br>解决方案非常狗血:直接改version.py….握草…把版本号改了就编译过去了…</p>
-<p>现在再去编译ns-3的结果就是<br>Modules built:<br>antenna                   aodv                      applications<br>bridge                    buildings                 config-store<br>core                      csma                      csma-layout<br>dsdv                      dsr                       energy<br>fd-net-device             flow-monitor              internet<br>lr-wpan                   lte                       mesh<br>mobility                  mpi                       ndnSIM<br>netanim (no Python)       network                   nix-vector-routing<br>olsr                      point-to-point            point-to-point-layout<br>propagation               sixlowpan                 spectrum<br>stats                     tap-bridge                test (no Python)<br>topology-read             uan                       virtual-net-device<br>visualizer                wave                      wifi<br>wimax                    </p>
-<p>Modules not built (see ns-3 tutorial for explanation):<br>brite                     click                     openflow </p>
+<p>现在再去编译ns-3的结果就是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">Modules built:</div><div class="line">antenna                   aodv                      applications             </div><div class="line">bridge                    buildings                 config-store             </div><div class="line">core                      csma                      csma-layout              </div><div class="line">dsdv                      dsr                       energy                   </div><div class="line">fd-net-device             flow-monitor              internet                 </div><div class="line">lr-wpan                   lte                       mesh                     </div><div class="line">mobility                  mpi                       ndnSIM                   </div><div class="line">netanim (no Python)       network                   nix-vector-routing       </div><div class="line">olsr                      point-to-point            point-to-point-layout    </div><div class="line">propagation               sixlowpan                 spectrum                 </div><div class="line">stats                     tap-bridge                test (no Python)         </div><div class="line">topology-read             uan                       virtual-net-device       </div><div class="line">visualizer                wave                      wifi                     </div><div class="line">wimax                    </div><div class="line"></div><div class="line">Modules not built (see ns-3 tutorial for explanation):</div><div class="line">brite                     click                     openflow</div></pre></td></tr></table></figure></p>
 <p>貌似用ndnSIM的话也用不上brite吧.of明摆着sdn的梗<br>click是一个构建可配置路由器的软件架构，通过使用称之为元素element(即包处理单元)的不同组合，click路由器能够执行特定功能，这种灵活性提供了测试和实验不同协议的优良平台。需要吗???<br>brite是自动生产拓扑的 ndnsSIM是否需要他,我也很怀疑呢</p>
 <h2 id="loading-libraries"><a href="#loading-libraries" class="headerlink" title="loading libraries"></a>loading libraries</h2><p>然后编译scenario出现:<br>error while loading shared libraries: libboost_graph.so.1.64.0: cannot open shared object file: No such file or directory</p>
 <p>解决方法:修改/etc/ls.so.conf,添加/usr/local/lib;<br>这个库存的是编译时动态连接库的路径(编译器默认存的是/lib和/usr/lib)<br>保存后在etc下执行ldconfig 然后无误.<br>ldconfig是root用户的操作,用来把动态连接库缓存到cache(换句话说,改完ls.so.conf就应该ldconfig)</p>
@@ -127,6 +126,11 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ns/">ns</a>
+  </div>
 
 </div>
 
@@ -177,6 +181,17 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
   
 
   
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ns/" title="ns">ns<sup>2</sup></a></li>
+			
+		
+		</ul>
+</div>
+
 
   <div class="linkslist">
   <p class="asidetitle">Links</p>
