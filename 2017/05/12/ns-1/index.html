@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>ns(1) | Vaisy&#39;s Blog</title>
+    <title>ns(1)配置 | Vaisy&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Vaisy">
@@ -14,14 +14,14 @@
     <meta name="description" content="严格按官网来.第一个坑就会出现:
 install boost自己去boost的官网下载编译.一切完成以后再重启:123456789The Boost C++ Libraries were successfully built!The following directory should be added to compiler include paths:    /home/tender/ndnS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ns(1)">
+<meta property="og:title" content="ns(1)配置">
 <meta property="og:url" content="http://yoursite.com/2017/05/12/ns-1/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="严格按官网来.第一个坑就会出现:
 install boost自己去boost的官网下载编译.一切完成以后再重启:123456789The Boost C++ Libraries were successfully built!The following directory should be added to compiler include paths:    /home/tender/ndnS">
-<meta property="og:updated_time" content="2017-05-14T15:32:34.937Z">
+<meta property="og:updated_time" content="2017-05-22T14:05:48.388Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="ns(1)">
+<meta name="twitter:title" content="ns(1)配置">
 <meta name="twitter:description" content="严格按官网来.第一个坑就会出现:
 install boost自己去boost的官网下载编译.一切完成以后再重启:123456789The Boost C++ Libraries were successfully built!The following directory should be added to compiler include paths:    /home/tender/ndnS">
 
@@ -81,7 +81,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/05/12/ns-1/" title="ns(1)" itemprop="url">ns(1)</a>
+      <a href="/2017/05/12/ns-1/" title="ns(1)配置" itemprop="url">ns(1)配置</a>
   </h1>
   <p class="article-author">By
        
@@ -121,6 +121,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 <p>缺一个文件 可他在哪啊<br>把前面的所有流程核对了一遍<br>发现编译ns-3的时候只注意了boost,没有加d -optimized.<br>再来一遍!!!…<br>waf完以后记得./waf install<br>然后ldconfig!!!(目测问题在这)<br>然后过!!!神tm居然过了!!!!!!</p>
 <h2 id="run-my-scanario"><a href="#run-my-scanario" class="headerlink" title="run my scanario"></a>run my scanario</h2><p>随便运行一个cpp<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">build/ndn-simple: error while loading shared libraries: libns3-dev-core-optimized.so: cannot open shared object file: No such file or directory</div></pre></td></tr></table></figure></p>
 <p>之前加的是PKG 估计是LG的路径吧<br>gedit ~/.bashrc<br>直接改!劳资知道你在哪! /usr/local/lib64 (找PKG的时候不小心看见的 哈哈哈)<br>发出了幸福的哭声<br>宝宝终于搭完环境了!!!</p>
+<p>后来:<br>我不懂为什么那个bug又出现了…<br>所以运行了LD_LIBRARY_PATH=/usr/local/lib64 ./waf –run ndn-simple –vis<br>解决方案是source ~/.bashrc</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -138,7 +139,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2017/05/12/ns-1/" data-title="ns(1) | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2017/05/12/ns-1/" data-title="ns(1)配置 | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -151,11 +152,19 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/05/19/ns-2/" title="ns(2):路由表计算">
+  <strong>上一篇：</strong><br/>
+  <span>
+  ns(2):路由表计算</span>
+</a>
+</div>
+
 
 <div class="next">
-<a href="/2017/05/08/ns-0/"  title="ns(0)">
+<a href="/2017/05/08/ns-0/"  title="ns(0)原理准备">
  <strong>下一篇：</strong><br/> 
- <span>ns(0)
+ <span>ns(0)原理准备
 </span>
 </a>
 </div>
@@ -186,7 +195,7 @@ install boost自己去boost的官网下载编译.一切完成以后再重启:123
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ns/" title="ns">ns<sup>2</sup></a></li>
+				<li><a href="/tags/ns/" title="ns">ns<sup>3</sup></a></li>
 			
 		
 		</ul>

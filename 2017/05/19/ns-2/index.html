@@ -1,0 +1,451 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>ns(2):路由表计算 | Vaisy&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="Vaisy">
+    
+
+    
+    <meta name="description" content="请允许我碎碎念一遍阅读秩序.
+ndnsim&amp;amp;boost这个文件的名字叫:boost-graph-ndn-global-routing-helper.hpp首先我们看清楚它的拓扑图长什么样子:1234567891011121314151617181920212223242526272829303132class NdnGlobalRouterGraph &amp;#123;public:  type">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ns(2):路由表计算">
+<meta property="og:url" content="http://yoursite.com/2017/05/19/ns-2/index.html">
+<meta property="og:site_name" content="Vaisy's Blog">
+<meta property="og:description" content="请允许我碎碎念一遍阅读秩序.
+ndnsim&amp;amp;boost这个文件的名字叫:boost-graph-ndn-global-routing-helper.hpp首先我们看清楚它的拓扑图长什么样子:1234567891011121314151617181920212223242526272829303132class NdnGlobalRouterGraph &amp;#123;public:  type">
+<meta property="og:updated_time" content="2017-05-22T14:08:52.347Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ns(2):路由表计算">
+<meta name="twitter:description" content="请允许我碎碎念一遍阅读秩序.
+ndnsim&amp;amp;boost这个文件的名字叫:boost-graph-ndn-global-routing-helper.hpp首先我们看清楚它的拓扑图长什么样子:1234567891011121314151617181920212223242526272829303132class NdnGlobalRouterGraph &amp;#123;public:  type">
+
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/pacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/pacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.svg" alt="Vaisy&#39;s Blog" title="Vaisy&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="Vaisy&#39;s Blog">Vaisy&#39;s Blog</a></h1>
+				<h2 class="blog-motto"></h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="Menu">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">Home</a></li>
+					
+						<li><a href="/archives">Archives</a></li>
+					
+						<li><a href="/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="Search" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2017/05/19/ns-2/" title="ns(2):路由表计算" itemprop="url">ns(2):路由表计算</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Vaisy" target="_blank" itemprop="author">Vaisy</a>
+		
+  <p class="article-time">
+    <time datetime="2017-05-19T14:04:39.000Z" itemprop="datePublished"> Published 2017-05-19</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">Contents</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ndnsim-amp-boost"><span class="toc-number">1.</span> <span class="toc-text">ndnsim&boost</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由计算"><span class="toc-number">2.</span> <span class="toc-text">路由计算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#distances"><span class="toc-number">2.1.</span> <span class="toc-text">distances</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数传递"><span class="toc-number">2.2.</span> <span class="toc-text">参数传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dij的使用"><span class="toc-number">2.3.</span> <span class="toc-text">dij的使用</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<p>请允许我碎碎念一遍阅读秩序.</p>
+<h2 id="ndnsim-amp-boost"><a href="#ndnsim-amp-boost" class="headerlink" title="ndnsim&amp;boost"></a>ndnsim&amp;boost</h2><p>这个文件的名字叫:boost-graph-ndn-global-routing-helper.hpp<br>首先我们看清楚它的拓扑图长什么样子:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">class NdnGlobalRouterGraph &#123;</div><div class="line">public:</div><div class="line">  typedef ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt; Vertice;</div><div class="line">  typedef uint16_t edge_property_type;</div><div class="line">  typedef uint32_t vertex_property_type;</div><div class="line"></div><div class="line">  NdnGlobalRouterGraph()</div><div class="line">  &#123;</div><div class="line">    for (ns3::NodeList::Iterator node = ns3::NodeList::Begin(); node != ns3::NodeList::End();</div><div class="line">         node++) &#123;</div><div class="line">      ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt; gr = (*node)-&gt;GetObject&lt;ns3::ndn::GlobalRouter&gt;();</div><div class="line">      if (gr != 0)</div><div class="line">        m_vertices.push_back(gr);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    for (ns3::ChannelList::Iterator channel = ns3::ChannelList::Begin();</div><div class="line">         channel != ns3::ChannelList::End(); channel++) &#123;</div><div class="line">      ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt; gr = (*channel)-&gt;GetObject&lt;ns3::ndn::GlobalRouter&gt;();</div><div class="line">      if (gr != 0)</div><div class="line">        m_vertices.push_back(gr);</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  const std::list&lt;Vertice&gt;&amp;</div><div class="line">  GetVertices() const</div><div class="line">  &#123;</div><div class="line">    return m_vertices;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">public:</div><div class="line">  std::list&lt;Vertice&gt; m_vertices;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p>node和channel都是非常普通的object也就是说,他们直接把点集和边集push进了这个list.<br>这两个是ns-3的概念:</p>
+<h2 id="路由计算"><a href="#路由计算" class="headerlink" title="路由计算"></a>路由计算</h2><p>ndn-global-routing-helper.hpp<br>直接关注其中一个函数:CalculateRoutes();这个函数在ndn-global-routing-helper.cpp<br>(好像是句废话啊)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">void</div><div class="line">GlobalRoutingHelper::CalculateRoutes()</div><div class="line">&#123;</div><div class="line">  BOOST_CONCEPT_ASSERT((boost::VertexListGraphConcept&lt;boost::NdnGlobalRouterGraph&gt;));</div><div class="line">  BOOST_CONCEPT_ASSERT((boost::IncidenceGraphConcept&lt;boost::NdnGlobalRouterGraph&gt;));</div><div class="line">//概念检验?</div><div class="line">  boost::NdnGlobalRouterGraph graph;</div><div class="line">//第一部分介绍的那只数据结构</div><div class="line"></div><div class="line">  for (NodeList::Iterator node = NodeList::Begin(); node != NodeList::End(); node++) &#123;</div><div class="line">    Ptr&lt;GlobalRouter&gt; source = (*node)-&gt;GetObject&lt;GlobalRouter&gt;();</div><div class="line">    if (source == 0) &#123;</div><div class="line">      NS_LOG_DEBUG(&quot;Node &quot; &lt;&lt; (*node)-&gt;GetId() &lt;&lt; &quot; does not export GlobalRouter interface&quot;);</div><div class="line">      continue;</div><div class="line">    &#125;</div><div class="line">//先获取了点集;</div><div class="line">    boost::DistancesMap distances;</div><div class="line">//数据结构1号:distances待会儿详细说</div><div class="line">    dijkstra_shortest_paths(graph, source,</div><div class="line">                            // predecessor_map (boost::ref(predecessors))</div><div class="line">                            // .</div><div class="line">                            distance_map(boost::ref(distances))</div><div class="line">                              .distance_inf(boost::WeightInf)</div><div class="line">                              .distance_zero(boost::WeightZero)</div><div class="line">                              .distance_compare(boost::WeightCompare())</div><div class="line">                              .distance_combine(boost::WeightCombine()));</div><div class="line">//参数传递稍后详述</div><div class="line">    // NS_LOG_DEBUG (predecessors.size () &lt;&lt; &quot;, &quot; &lt;&lt; distances.size ());</div><div class="line"></div><div class="line">    Ptr&lt;L3Protocol&gt; L3protocol = (*node)-&gt;GetObject&lt;L3Protocol&gt;();</div><div class="line">    shared_ptr&lt;nfd::Forwarder&gt; forwarder = L3protocol-&gt;getForwarder();</div><div class="line"></div><div class="line">    NS_LOG_DEBUG(&quot;Reachability from Node: &quot; &lt;&lt; source-&gt;GetObject&lt;Node&gt;()-&gt;GetId());</div><div class="line">//遍历distances填表而已.不要惊慌.</div><div class="line">    for (const auto&amp; dist : distances) &#123;</div><div class="line">      if (dist.first == source)</div><div class="line">        continue;</div><div class="line">      else &#123;</div><div class="line">        // cout &lt;&lt; &quot;  Node &quot; &lt;&lt; dist.first-&gt;GetObject&lt;Node&gt; ()-&gt;GetId ();</div><div class="line">        if (std::get&lt;0&gt;(dist.second) == 0) &#123;</div><div class="line">          // cout &lt;&lt; &quot; is unreachable&quot; &lt;&lt; endl;</div><div class="line">        &#125;</div><div class="line">        else &#123;</div><div class="line">          for (const auto&amp; prefix : dist.first-&gt;GetLocalPrefixes()) &#123;</div><div class="line">            NS_LOG_DEBUG(&quot; prefix &quot; &lt;&lt; prefix &lt;&lt; &quot; reachable via face &quot; &lt;&lt; *std::get&lt;0&gt;(dist.second)</div><div class="line">                         &lt;&lt; &quot; with distance &quot; &lt;&lt; std::get&lt;1&gt;(dist.second) &lt;&lt; &quot; with delay &quot;</div><div class="line">                         &lt;&lt; std::get&lt;2&gt;(dist.second));</div><div class="line"></div><div class="line">            FibHelper::AddRoute(*node, *prefix, std::get&lt;0&gt;(dist.second),</div><div class="line">                                std::get&lt;1&gt;(dist.second));</div><div class="line">          &#125;</div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="distances"><a href="#distances" class="headerlink" title="distances"></a>distances</h3><p>在第一段提到的文件里:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">struct DistancesMap : public std::map&lt;ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt;,</div><div class="line">                                      std::tuple&lt;std::shared_ptr&lt;nfd::Face&gt;, uint32_t, double&gt;&gt; &#123;</div><div class="line">&#125;;</div><div class="line">template&lt;&gt;</div><div class="line">struct property_traits&lt;reference_wrapper&lt;DistancesMap&gt;&gt; &#123;</div><div class="line">  // Metric property map</div><div class="line">  typedef std::tuple&lt;std::shared_ptr&lt;nfd::Face&gt;, uint32_t, double&gt; value_type;</div><div class="line">  typedef std::tuple&lt;std::shared_ptr&lt;nfd::Face&gt;, uint32_t, double&gt; reference;</div><div class="line">  typedef ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt; key_type;</div><div class="line">  typedef read_write_property_map_tag category;</div><div class="line">&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>很明显了 distances是个DistancesMap的东西,里面包括了一个GlobalRouter类型的指针,一个包括了Face类型共享指针,uint32和double的tuple.<br>然后给了它一个装饰器,对于tuple有value值和引用,对于指针有主键类型,以及图的可读写类型.<br>根据解释这个int是metric,double不知道什么玩意儿</p>
+<h3 id="参数传递"><a href="#参数传递" class="headerlink" title="参数传递"></a>参数传递</h3><p>神tm坑.A better solution is provided by bgl_named_params. This class allows users to provide parameters is any order, and matches arguments to parameters based on parameter names.<br>也就是说:通过参数名称来匹配的.<br>Typically the user never needs to deal with the bgl_named_params class directly, since there are functions like boost::weight_map that create an instance of bgl_named_params.<br>也就是说已经使用了这个类了 嗯</p>
+<p>有没有觉得这就是个披着C++外衣的py???装饰器?匿名传参? 嗯对没传的应该是用默认值了吧</p>
+<h3 id="dij的使用"><a href="#dij的使用" class="headerlink" title="dij的使用"></a>dij的使用</h3><p>忍住没吐的半口血说:真是个学习visitor的好机会啊.这个很明显在BGL库里了<br>怎么说呢,我的理解是下面这样的<br>line527处理了一遍source的参数,line507加入了无名参数.line412生成了2bit的color,line455初始化染色标记<br>line355进入正题.<br>首先第一步就懵了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">boost::scoped_array&lt;std::size_t&gt; index_in_heap_map_holder;</div><div class="line">typedef</div><div class="line">  detail::vertex_property_map_generator&lt;Graph, IndexMap, std::size_t&gt;</div><div class="line">  IndexInHeapMapHelper;</div><div class="line">typedef typename IndexInHeapMapHelper::type IndexInHeapMap;</div><div class="line">IndexInHeapMap index_in_heap =</div><div class="line">  IndexInHeapMapHelper::build(g, index_map, index_in_heap_map_holder);</div><div class="line">typedef d_ary_heap_indirect&lt;Vertex, 4, IndexInHeapMap, DistanceMap, Compare&gt;</div><div class="line">  MutableQueue;</div><div class="line">MutableQueue Q(distance, index_in_heap, compare);</div></pre></td></tr></table></figure></p>
+<p>勉强理解为给了一个每size_t大小的叫做index…的动态数组<br>给了一个依据这个数组生成定点的helper;用这个helper完成了build工作<br>(对看到这我明白了build这个单词的含义 嗯……)<br><a href="https://en.wikipedia.org/wiki/D-ary_heap" target="_blank" rel="external">d_ary_heap_indirect</a>…(希望下次看到boost能笑着活下去)<br>d叉树优先队列,通常用于这些降低优先级比删除更频繁的操作:比如dij.<br>以bfs的顺序列出.由于heap属性:在一个最小堆中,子的优先级不低于父优先级;最大堆与之相反.<br>最小堆中的最小优先级项（或最大堆中的最大优先级项）可能始终位于数组的位置0。 要从优先级队列中删除该项目，数组中的最后一个项目x将移动到其位置，数组的长度减少一个。 然后，当项目x及其子项不满足堆属性时，项x与其子中的一个（最小堆优先级最小的一个或最大堆优先级最小的子）交换， 将其向下移动到树中，然后在数组中移动，直到最终堆属性满足为止。 可以使用相同的向下交换过程来增加最小堆中项目的优先级，或降低最大堆中项目的优先级。要将一个新项目插入到堆中，该项目将附加到数组的末尾，然后在堆属性被违反时，它将与其父代进行交换，将其向上移动到树中并在数组中更早的位置，直到最终 堆属性满足。 可以使用相同的向上交换过程来降低最小堆中的项目的优先级，或者增加最大堆中的项目的优先级.要从n个项目的数组中创建一个新堆，可以以相反的顺序循环选择项目，从位置n-1处的项目开始，并以0的项目结束，对每个项目应用向下交换过程.</p>
+<p>然后定义了一个可变队列包括&lt;顶点,4???,新鲜出炉的helper,DistanceMap, Compare&gt;.<br>目前的理解来看是个四叉树形式的最大堆.<br>Q的参数是(distance,build得到的那只,compare) 嗯以后就靠这个Q了</p>
+<p>bfs_vis(vis, Q, weight, predecessor, distance, combine, compare, zero);<br>这个地方把vis的参数都放进来了<br>然后进入正题:breadth_first_visit(g, s_begin, s_end, Q, bfs_vis, color);<br>所以这一步的目的是用获取index?</p>
+<p>第二步了.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">  while (! Q.empty()) &#123;</div><div class="line">    Vertex u = Q.top(); Q.pop();            vis.examine_vertex(u, g);</div><div class="line">    for (boost::tie(ei, ei_end) = out_edges(u, g); ei != ei_end; ++ei) &#123;</div><div class="line">      Vertex v = target(*ei, g);            vis.examine_edge(*ei, g);</div><div class="line">      ColorValue v_color = get(color, v);</div><div class="line">      if (v_color == Color::white()) &#123;      vis.tree_edge(*ei, g);</div><div class="line">        put(color, v, Color::gray());       vis.discover_vertex(v, g);</div><div class="line">        Q.push(v);</div><div class="line">      &#125; else &#123;                              vis.non_tree_edge(*ei, g);</div><div class="line">        if (v_color == Color::gray())       vis.gray_target(*ei, g);</div><div class="line">        else                                vis.black_target(*ei, g);</div><div class="line">      &#125;</div><div class="line">    &#125; // end for</div><div class="line">    put(color, u, Color::black());          vis.finish_vertex(u, g);</div><div class="line">  &#125; // end while</div><div class="line">&#125; // breadth_first_vis</div></pre></td></tr></table></figure></p>
+<p>左半边非常好理解:正常染色工作.没访问过白色,还在访问中灰色,访问结束黑色<br>右边是对事件的反应.也很好理解.参见dij算法文件的line118…<br>用到的一系列函数都定义在dij中,最重要的两部分是tree_edge和gray_target<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">void tree_edge(Edge e, Graph&amp; g) &#123;</div><div class="line">  bool decreased = relax(e, g, m_weight, m_predecessor, m_distance,</div><div class="line">                         m_combine, m_compare);</div><div class="line">  if (decreased)</div><div class="line">    m_vis.edge_relaxed(e, g);</div><div class="line">  else</div><div class="line">    m_vis.edge_not_relaxed(e, g);</div><div class="line">&#125;</div><div class="line">template &lt;class Edge, class Graph&gt;</div><div class="line">void gray_target(Edge e, Graph&amp; g) &#123;</div><div class="line">  D old_distance = get(m_distance, target(e, g));</div><div class="line"></div><div class="line">  bool decreased = relax(e, g, m_weight, m_predecessor, m_distance,</div><div class="line">                         m_combine, m_compare);</div><div class="line">  if (decreased) &#123;</div><div class="line">    dijkstra_queue_update(m_Q, target(e, g), old_distance);</div><div class="line">    m_vis.edge_relaxed(e, g);</div><div class="line">  &#125; else</div><div class="line">    m_vis.edge_not_relaxed(e, g);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>用到的函数如下:</p>
+<ul>
+<li>vis.initialize_vertex(u, g) is invoked on each vertex in the graph before the start of the algorithm.</li>
+<li>vis.examine_vertex(u, g) is invoked on a vertex as it is removed from the priority queue and added to set S. At this point we know that (p[u],u) is a shortest-paths tree edge so d[u] = delta(s,u) = d[p[u]] + w(p[u],u). Also, the distances of the examined vertices is monotonically increasing d[u1] &lt;= d[u2] &lt;= d[un].</li>
+<li>vis.examine_edge(e, g) is invoked on each out-edge of a vertex immediately after it has been added to set S.</li>
+<li>vis.edge_relaxed(e, g) is invoked on edge (u,v) if d[u] + w(u,v) &lt; d[v]. The edge (u,v) that participated in the last relaxation for vertex v is an edge in the shortest paths tree.</li>
+<li>vis.discover_vertex(v, g) is invoked on vertex v when the edge (u,v) is examined and v is WHITE. Since a vertex is colored GRAY when it is discovered, each reacable vertex is discovered exactly once. This is also when the vertex is inserted into the priority queue.</li>
+<li>vis.edge_not_relaxed(e, g) is invoked if the edge is not relaxed (see above).</li>
+<li>vis.finish_vertex(u, g) is invoked on a vertex after all of its out edges have been examined.</li>
+</ul>
+<p>简直是个奇迹 我他妈居然一周看完了BGL库 有种想跪下来赞美自己的冲动<br>由上你已经看懂了BGL是怎么算dij的了…嗯</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ns/">ns</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2017/05/19/ns-2/" data-title="ns(2):路由表计算 | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2017/05/12/ns-1/"  title="ns(1)配置">
+ <strong>下一篇：</strong><br/> 
+ <span>ns(1)配置
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="Show Sidebar"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">Contents</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#ndnsim-amp-boost"><span class="toc-number">1.</span> <span class="toc-text">ndnsim&boost</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#路由计算"><span class="toc-number">2.</span> <span class="toc-text">路由计算</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#distances"><span class="toc-number">2.1.</span> <span class="toc-text">distances</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#参数传递"><span class="toc-number">2.2.</span> <span class="toc-text">参数传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#dij的使用"><span class="toc-number">2.3.</span> <span class="toc-text">dij的使用</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="Hide Sidebar"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">Tags</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/ns/" title="ns">ns<sup>3</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">Links</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="https://leetcode.com/" target="_blank" title="Leetcode">Leetcode</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://www.hihocoder.com/" target="_blank" title="hihocoder">hihocoder</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Vaisy. <br/>
+			</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		<a href="http://weibo.com/3225308807" target="_blank" class="icon-weibo" title="微博"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:vaisy@foxmail.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		
+		<a href="/about" target="_blank" title="Vaisy">Vaisy</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="Back to Top"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
