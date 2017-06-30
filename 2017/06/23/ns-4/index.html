@@ -4,26 +4,23 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>js大作业(1) | Vaisy&#39;s Blog</title>
+    <title>ns(4) | Vaisy&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Vaisy">
     
 
     
-    <meta name="description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
+    <meta name="description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js大作业(1)">
-<meta property="og:url" content="http://yoursite.com/2017/03/19/js-1/index.html">
+<meta property="og:title" content="ns(4)">
+<meta property="og:url" content="http://yoursite.com/2017/06/23/ns-4/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
-<meta property="og:description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
-<meta property="og:updated_time" content="2017-05-03T15:19:01.664Z">
+<meta property="og:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
+<meta property="og:updated_time" content="2017-06-26T04:38:45.933Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js大作业(1)">
-<meta name="twitter:description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
+<meta name="twitter:title" content="ns(4)">
+<meta name="twitter:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
 
     
     
@@ -81,14 +78,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/03/19/js-1/" title="js大作业(1)" itemprop="url">js大作业(1)</a>
+      <a href="/2017/06/23/ns-4/" title="ns(4)" itemprop="url">ns(4)</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Vaisy" target="_blank" itemprop="author">Vaisy</a>
 		
   <p class="article-time">
-    <time datetime="2017-03-19T04:48:41.000Z" itemprop="datePublished"> Published 2017-03-19</time>
+    <time datetime="2017-06-23T06:11:44.000Z" itemprop="datePublished"> Published 2017-06-23</time>
     
   </p>
 </header>
@@ -101,21 +98,41 @@
 		
 		</div>
 		
-		<p>改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室<br>开啃ＭＶＣ设计模式。我确实不是个程序员。<br>换句话讲，我只关心架构。coding只是业余爱好而已。  </p>
-<p>心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。<br>唔跟黎讲啊。。。 express -e完一定要记得npm install<br>这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。<br>按他说的改完index.js和app.js之后 直接node app.js启动。别想自己错哪了。<br>我们理一下到目前为止的逻辑啊。<br>骨架是express给的。<br>我们只运行了app.js来启动程序。在app.js里用routes获取到了index.js;仅此而已。<br>然后页面设计先给四个。未登录的：home、login、register；已登录的：home、post、logout；<br>判断用户是否登录这里用了MongoDB（NoSQL） 算了不用MySQL也行 早晚要和NoSQL在一起的<br>我发现我学py和学js的道路真是一饮一啄相辅相成。<br>express4连接mongo时会出问题。把connect-mongo换成0.8.2就ok。。。<br>所以说安装最新版这种强迫症千万别有 不然怎么死的都不知道<br>明天睡醒建好user模型，控制下页面权限。<br>好歹现在思路很顺了呀  </p>
-<p>再捋一下哈。对我来说重要的就这些<br>-models<br>    -db.js<br>    -user.js<br>-routes<br>    -index.js<br>    -users.js<br>-views<br>-app.js</p>
-<p>程序框架在app.js里。接口都在这里。<br>第一步跳转逻辑，可以在routes里写个大概。<br>第二步设计页面，这一步写在views。<br>第三部页面逻辑，这一步也在routes里写。最麻烦的就是这。  </p>
-<p>所以今天的工作其实很顺利。嗯。回顾一下自己要做的东西；<br>起码。页面权限控制和用户登录注册已经实现了。<br>下一步操作应该是：  </p>
+		<p>剩余步骤:<br>1.caculate的结果输出,标明which i stores which j;<br>2.producer处标记数据包的来源;<br>3.consumer的请求zipf化.<br>3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;<br>4.在scenario处生成trace.txt 处理成图.(R语言脚本)<br>/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,目前是完全根据拓扑的</p>
+<p>一步一步来:</p>
 <ul>
-<li>用户的好友？？<br>坦白讲我是拒绝一对一的。活到现在我感觉最不稳定的关系就是一对一关系。<br>最稳定的关系就是没有关系。嗯。<br>所以 所谓聊天室是要怎么做 如果只是文件缓存我就认了<br>因为如果你要有好友 你就应该有一个搜索页面 应该有添加好友 应该有别人发给你的添加请求<br>越想越累 我宁愿直接显示谁在线 然后发给他 既然user id唯一<br>（虽然好像也要搜索吧 但是感觉不那么烦躁了）  </li>
-<li>聊天发送消息？？？<br>明天再看吧 想想设计模式<br>感觉不难 是我一时没找到头绪 思路没顺下来 再说吧 周一之前能搞定<br>最近压力其实也蛮大的。  </li>
+<li>怎么在forwarder处拿到自己的ID<br>forwarder拥有该节点的所有接口和表,同时实现管道.<br>但它有nametree作为FIB,PIT等等的索引结构.<br>观察了下都是这种结构<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NameTree&amp;</div><div class="line">getNameTree()</div><div class="line">&#123;</div><div class="line">  return m_nameTree;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<p>继续补吧。在前面是用mongo来存储用户登录信息的 非常松散的bjson格式；而redis是kv型的<br>再其次就是存储上有一些区别了 先到这吧。。。  </p>
+<p>返回值是NameTree引用,作为getNameTree的别名?<br>试着在forwarder.hpp加了getNodeID的功能 准备调用<br>注意记得加成员变量.<br>(已经编译过去了)</p>
+<ul>
+<li><p>怎么保存caculate的结果<br>vector<pair<int,int>&gt;写到txt</pair<int,int></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> std::ofstream fout;</div><div class="line"> fout.open(&quot;result.txt&quot;,std::ios_base::out);</div><div class="line"> if(fout.is_open())</div><div class="line"> &#123;</div><div class="line">  for(std::vector&lt;std::pair&lt;uint32_t,uint32_t&gt;&gt;::iterator i=results.begin();i!=results.end(); ++i)</div><div class="line">   &#123;</div><div class="line">     fout&lt;&lt;(*i).first&lt;&lt;(*i).second;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line">fout.close();</div></pre></td></tr></table></figure>
+</li>
+<li><p>producer确定来源<br>Error:class std::shared_ptr<ndn::data>’ has no member named ‘setTag’<br>在ndnSIM中有两种Tag，一个是ns3::ndn::Tag，这个节点可以加入data,但是只在节点内部;<br>另一种还有一个Tag是ns3::Tag，这个Tag可以加入packet中，它可以实现节点间的数据传递</ndn::data></p>
+</li>
+</ul>
+<p>但是在啃tag的时候我注意到了producer里有这样一段<br>      .AddAttribute(“Prefix”, “Prefix, for which producer has the data”, StringValue(“/“),<br>                    MakeNameAccessor(&amp;Producer::m_prefix), MakeNameChecker())<br>      .AddAttribute(<br>         “Postfix”,<br>         “Postfix that is added to the output data (e.g., for adding producer-uniqueness)”,<br>         StringValue(“/“), MakeNameAccessor(&amp;Producer::m_postfix), MakeNameChecker())</p>
+<p>postfix只是增强producer独特性,先不管了,但是prefix就足以标明身份…<br>所以我脑子确实有坑…</p>
+<ul>
+<li>consumer的<a href="https://en.wikipedia.org/wiki/Zipf&#39;s_law" target="_blank" rel="external">zipf分布</a><br>zipf的公式为P(r) = C / r^α;P(r)是内容出现的频率;r是频率出现的排名;<br>公式是这样m_Pcum[i] = m_Pcum[i - 1] + 1.0 / std::pow(i + m_q, m_s);<br>从ConsumerCbr继承;属性包括内容总数;q,s;<br>默认是0.7虽然我也不懂为什么…</li>
+</ul>
+<p>更奇怪的事情出现了<br>zipf分布出来自带%FE%0前缀…<br>一怒之下直接给producer加了%FE%0前缀来满足请求…<br>这个逻辑我也是不太懂<br>反正算是解决了…</p>
+<ul>
+<li>先解决第一个事情…<br>result.txt我能找到…<br>但特么每次都不一样完全就是个乱码好吧</li>
+</ul>
+<p>弃疗了<br>直接用string把getline读出来 强行给了\n特征<br>成功了…</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">std::ifstream fin(&quot;result.txt&quot;);</div><div class="line">while(fin)</div><div class="line">&#123;</div><div class="line">    std::string xx,yy;</div><div class="line">    std::stringstream s;</div><div class="line">    getline(fin,xx,&apos;\n&apos;);</div><div class="line">    getline(fin,yy,&apos;\n&apos;);</div><div class="line">    const char *x=xx.c_str();</div><div class="line">    if(atol(x)==m_NodeID)</div><div class="line">    &#123;</div><div class="line">      s.str(&quot;&quot;);</div><div class="line">      std::string prefix=&quot;/%FE%0&quot;+yy;</div><div class="line">      NFD_LOG_DEBUG(atol(x)&lt;&lt;&quot;should store&quot;&lt;&lt;yy&lt;&lt;std::endl);</div><div class="line">      if(data.getName()==prefix)</div><div class="line">      &#123;</div><div class="line">        if (m_csFromNdnSim == nullptr)</div><div class="line">         m_cs.insert(data, true);</div><div class="line">        else</div><div class="line">         m_csFromNdnSim-&gt;Add(data.shared_from_this());</div><div class="line">        break;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ns/">ns</a>
+  </div>
 
 </div>
 
@@ -123,7 +140,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2017/03/19/js-1/" data-title="js大作业(1) | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2017/06/23/ns-4/" data-title="ns(4) | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -136,19 +153,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/04/23/js-2/" title="js大作业(2)">
-  <strong>上一篇：</strong><br/>
-  <span>
-  js大作业(2)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/03/16/js-0/"  title="js大作业(0)">
+<a href="/2017/05/23/ns-3/"  title="ns(3)">
  <strong>下一篇：</strong><br/> 
- <span>js大作业(0)
+ <span>ns(3)
 </span>
 </a>
 </div>
