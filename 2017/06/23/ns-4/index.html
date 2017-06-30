@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/23/ns-4/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
-<meta property="og:updated_time" content="2017-06-26T04:38:45.933Z">
+<meta property="og:updated_time" content="2017-06-30T08:20:50.765Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(4)">
 <meta name="twitter:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
@@ -104,7 +104,7 @@
 <li>怎么在forwarder处拿到自己的ID<br>forwarder拥有该节点的所有接口和表,同时实现管道.<br>但它有nametree作为FIB,PIT等等的索引结构.<br>观察了下都是这种结构<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NameTree&amp;</div><div class="line">getNameTree()</div><div class="line">&#123;</div><div class="line">  return m_nameTree;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 </li>
 </ul>
-<p>返回值是NameTree引用,作为getNameTree的别名?<br>试着在forwarder.hpp加了getNodeID的功能 准备调用<br>注意记得加成员变量.<br>(已经编译过去了)</p>
+<p>返回值是NameTree引用,作为getNameTree的别名?<br>试着在forwarder.hpp加了getNodeID的功能 准备调用<br>注意记得加成员变量.<br>请注意在l3-protocol设置node的值</p>
 <ul>
 <li><p>怎么保存caculate的结果<br>vector<pair<int,int>&gt;写到txt</pair<int,int></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> std::ofstream fout;</div><div class="line"> fout.open(&quot;result.txt&quot;,std::ios_base::out);</div><div class="line"> if(fout.is_open())</div><div class="line"> &#123;</div><div class="line">  for(std::vector&lt;std::pair&lt;uint32_t,uint32_t&gt;&gt;::iterator i=results.begin();i!=results.end(); ++i)</div><div class="line">   &#123;</div><div class="line">     fout&lt;&lt;(*i).first&lt;&lt;(*i).second;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line">fout.close();</div></pre></td></tr></table></figure>
@@ -122,7 +122,14 @@
 <li>先解决第一个事情…<br>result.txt我能找到…<br>但特么每次都不一样完全就是个乱码好吧</li>
 </ul>
 <p>弃疗了<br>直接用string把getline读出来 强行给了\n特征<br>成功了…</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">std::ifstream fin(&quot;result.txt&quot;);</div><div class="line">while(fin)</div><div class="line">&#123;</div><div class="line">    std::string xx,yy;</div><div class="line">    std::stringstream s;</div><div class="line">    getline(fin,xx,&apos;\n&apos;);</div><div class="line">    getline(fin,yy,&apos;\n&apos;);</div><div class="line">    const char *x=xx.c_str();</div><div class="line">    if(atol(x)==m_NodeID)</div><div class="line">    &#123;</div><div class="line">      s.str(&quot;&quot;);</div><div class="line">      std::string prefix=&quot;/%FE%0&quot;+yy;</div><div class="line">      NFD_LOG_DEBUG(atol(x)&lt;&lt;&quot;should store&quot;&lt;&lt;yy&lt;&lt;std::endl);</div><div class="line">      if(data.getName()==prefix)</div><div class="line">      &#123;</div><div class="line">        if (m_csFromNdnSim == nullptr)</div><div class="line">         m_cs.insert(data, true);</div><div class="line">        else</div><div class="line">         m_csFromNdnSim-&gt;Add(data.shared_from_this());</div><div class="line">        break;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">std::ifstream fin(&quot;result.txt&quot;);</div><div class="line">//fin.open(&quot;result.txt&quot;,std::ios_base::in);</div><div class="line">while(fin)</div><div class="line">&#123;</div><div class="line">  std::string xx,yy;</div><div class="line">  std::stringstream s;</div><div class="line">  getline(fin,xx,&apos; &apos;);</div><div class="line">  getline(fin,yy,&apos;\n&apos;);// xx should stores yy</div><div class="line">  const char *x=xx.c_str();// x为char型</div><div class="line">  //std::cout&lt;&lt;atol(x)&lt;&lt;&quot; &quot;&lt;&lt;m_NodeID&lt;&lt;std::endl;</div><div class="line">  if(atol(x)==m_NodeID)</div><div class="line">  &#123;</div><div class="line">    s.str(&quot;&quot;);</div><div class="line">    std::string prefix=&quot;/%FE%0&quot;+yy;</div><div class="line">    s&lt;&lt;data.getName();</div><div class="line">    if(s.str()==prefix)</div><div class="line">    &#123;</div><div class="line">      std::cout&lt;&lt;m_NodeID&lt;&lt;&quot;stores&quot;&lt;&lt;yy&lt;&lt;&quot;,which called&quot;&lt;&lt;prefix&lt;&lt;std::endl;</div><div class="line">      if (m_csFromNdnSim == nullptr)</div><div class="line">        m_cs.insert(data, true);</div><div class="line">      else</div><div class="line">        m_csFromNdnSim-&gt;Add(data.shared_from_this());</div><div class="line">      //break;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">fin.close();</div></pre></td></tr></table></figure>
+<p>然后还有一件事:<br>先分清楚onDataUnsolicited和onIncomingData<br>它逻辑是这样:如果PIT里有这个数据 我就先转了它 然后想想看要不要存<br>如果没人想要它 那我想想要不要存.</p>
+<p>记得把这个事儿注释掉.</p>
+<p>结果是对的.</p>
+<p>但是,,,cs_entry是空的…cs_trace也没有…</p>
+<p>我打算从头开始解决<br>因为我把forwarder和l3protocol恢复了都没用…</p>
+<p>所以现在考虑是软件包的问题<br>零零碎碎装了一大堆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"> sudo apt-get install gcc g++ python              </div><div class="line">sudo apt-get install gcc g++ python python-dev</div><div class="line">sudo apt-get install mercurial</div><div class="line">sudo apt-get install bzr</div><div class="line">sudo apt-get install gdb valgrind</div><div class="line">sudo apt-get install gsl-bin libgsl0-dev libgsl0ldbl</div><div class="line">sudo apt-get install flex bison libfl-dev</div><div class="line">sudo apt-get install g++ gcc</div><div class="line">sudo apt-get install tcpdump</div><div class="line">sudo apt-get install sqlite sqlite3 libsqlite3-dev</div><div class="line">sudo apt-get install libxml2 libxml2-dev</div><div class="line">sudo apt-get install libgtk2.0-0 libgtk2.0-dev</div><div class="line">sudo apt-get install vtun lxc</div><div class="line">sudo apt-get install uncrustify</div><div class="line">sudo apt-get install doxygen graphviz imagemagick </div><div class="line">sudo apt-get install texlive texlive-extra-utils texlive-latex-extra</div><div class="line">sudo apt-get install python-sphinx dia</div><div class="line">sudo apt-get install python-pygraphviz python-kiwi python-pygoocanvas libgoocanvas-dev</div><div class="line">sudo apt-get install libboost-signals-dev libboost-filesystem-dev</div><div class="line">sudo apt-get install openmpi-bin openmpi-doc libopenmpi-dev</div></pre></td></tr></table></figure></p>
+<p>并不知道谁有用…but it works</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -153,6 +160,14 @@
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/06/26/ns-5/" title="ns(5):数据处理">
+  <strong>上一篇：</strong><br/>
+  <span>
+  ns(5):数据处理</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2017/05/23/ns-3/"  title="ns(3)">
@@ -188,7 +203,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ns/" title="ns">ns<sup>5</sup></a></li>
+				<li><a href="/tags/ns/" title="ns">ns<sup>6</sup></a></li>
 			
 		
 		</ul>

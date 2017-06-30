@@ -4,26 +4,35 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>js大作业(1) | Vaisy&#39;s Blog</title>
+    <title>ns(5):数据处理 | Vaisy&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Vaisy">
     
 
     
-    <meta name="description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
+    <meta name="description" content="令人痛苦的部分终于开始了:一共两步:
+
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+
+处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
 <meta property="og:type" content="article">
-<meta property="og:title" content="js大作业(1)">
-<meta property="og:url" content="http://yoursite.com/2017/03/19/js-1/index.html">
+<meta property="og:title" content="ns(5):数据处理">
+<meta property="og:url" content="http://yoursite.com/2017/06/26/ns-5/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
-<meta property="og:description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
-<meta property="og:updated_time" content="2017-05-03T15:19:01.664Z">
+<meta property="og:description" content="令人痛苦的部分终于开始了:一共两步:
+
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+
+处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
+<meta property="og:updated_time" content="2017-06-30T08:29:44.530Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="js大作业(1)">
-<meta name="twitter:description" content="改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室开啃ＭＶＣ设计模式。我确实不是个程序员。换句话讲，我只关心架构。coding只是业余爱好而已。  
-心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。唔跟黎讲啊。。。 express -e完一定要记得npm install这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。按他说的改">
+<meta name="twitter:title" content="ns(5):数据处理">
+<meta name="twitter:description" content="令人痛苦的部分终于开始了:一共两步:
+
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+
+处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
 
     
     
@@ -81,14 +90,14 @@
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2017/03/19/js-1/" title="js大作业(1)" itemprop="url">js大作业(1)</a>
+      <a href="/2017/06/26/ns-5/" title="ns(5):数据处理" itemprop="url">ns(5):数据处理</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Vaisy" target="_blank" itemprop="author">Vaisy</a>
 		
   <p class="article-time">
-    <time datetime="2017-03-19T04:48:41.000Z" itemprop="datePublished"> Published 2017-03-19</time>
+    <time datetime="2017-06-26T14:07:46.000Z" itemprop="datePublished"> Published 2017-06-26</time>
     
   </p>
 </header>
@@ -101,21 +110,23 @@
 		
 		</div>
 		
-		<p>改了作业内容。觉得打游戏太low(掩面逃（＊／ω╲＊）)要做聊天室<br>开啃ＭＶＣ设计模式。我确实不是个程序员。<br>换句话讲，我只关心架构。coding只是业余爱好而已。  </p>
-<p>心情有点混乱是怎么回事。不扯废话了。参考赵坤的Node.js实战，博文出品。<br>唔跟黎讲啊。。。 express -e完一定要记得npm install<br>这个时候呢 只能靠DEBUG=test1 node ./bin/www启动。<br>按他说的改完index.js和app.js之后 直接node app.js启动。别想自己错哪了。<br>我们理一下到目前为止的逻辑啊。<br>骨架是express给的。<br>我们只运行了app.js来启动程序。在app.js里用routes获取到了index.js;仅此而已。<br>然后页面设计先给四个。未登录的：home、login、register；已登录的：home、post、logout；<br>判断用户是否登录这里用了MongoDB（NoSQL） 算了不用MySQL也行 早晚要和NoSQL在一起的<br>我发现我学py和学js的道路真是一饮一啄相辅相成。<br>express4连接mongo时会出问题。把connect-mongo换成0.8.2就ok。。。<br>所以说安装最新版这种强迫症千万别有 不然怎么死的都不知道<br>明天睡醒建好user模型，控制下页面权限。<br>好歹现在思路很顺了呀  </p>
-<p>再捋一下哈。对我来说重要的就这些<br>-models<br>    -db.js<br>    -user.js<br>-routes<br>    -index.js<br>    -users.js<br>-views<br>-app.js</p>
-<p>程序框架在app.js里。接口都在这里。<br>第一步跳转逻辑，可以在routes里写个大概。<br>第二步设计页面，这一步写在views。<br>第三部页面逻辑，这一步也在routes里写。最麻烦的就是这。  </p>
-<p>所以今天的工作其实很顺利。嗯。回顾一下自己要做的东西；<br>起码。页面权限控制和用户登录注册已经实现了。<br>下一步操作应该是：  </p>
+		<p>令人痛苦的部分终于开始了:<br>一共两步:</p>
 <ul>
-<li>用户的好友？？<br>坦白讲我是拒绝一对一的。活到现在我感觉最不稳定的关系就是一对一关系。<br>最稳定的关系就是没有关系。嗯。<br>所以 所谓聊天室是要怎么做 如果只是文件缓存我就认了<br>因为如果你要有好友 你就应该有一个搜索页面 应该有添加好友 应该有别人发给你的添加请求<br>越想越累 我宁愿直接显示谁在线 然后发给他 既然user id唯一<br>（虽然好像也要搜索吧 但是感觉不那么烦躁了）  </li>
-<li>聊天发送消息？？？<br>明天再看吧 想想设计模式<br>感觉不难 是我一时没找到头绪 思路没顺下来 再说吧 周一之前能搞定<br>最近压力其实也蛮大的。  </li>
+<li><p>拿到一个拓扑.<br>topozoo上大把的graphml;但问题是:graphml怎么转txt…<br>好一点处理方式是写个脚本 比较舒服 但是慢<br>坏一点 人工呗…</p>
+</li>
+<li><p>处理生成的数据<br>R脚本处理trace.txt并画图.照着模板改就是了</p>
+</li>
 </ul>
-<p>继续补吧。在前面是用mongo来存储用户登录信息的 非常松散的bjson格式；而redis是kv型的<br>再其次就是存储上有一些区别了 先到这吧。。。  </p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/ns/">ns</a>
+  </div>
 
 </div>
 
@@ -123,7 +134,7 @@
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2017/03/19/js-1/" data-title="js大作业(1) | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2017/06/26/ns-5/" data-title="ns(5):数据处理 | Vaisy&#39;s Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -136,19 +147,11 @@
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2017/04/23/js-2/" title="js大作业(2)">
-  <strong>上一篇：</strong><br/>
-  <span>
-  js大作业(2)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2017/03/16/js-0/"  title="js大作业(0)">
+<a href="/2017/06/23/ns-4/"  title="ns(4)">
  <strong>下一篇：</strong><br/> 
- <span>js大作业(0)
+ <span>ns(4)
 </span>
 </a>
 </div>
