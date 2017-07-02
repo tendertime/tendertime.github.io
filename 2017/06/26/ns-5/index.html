@@ -12,27 +12,33 @@
 
     
     <meta name="description" content="令人痛苦的部分终于开始了:一共两步:
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…处理方式是写个脚本 比较舒服 但是慢摆在我面前有两条路:
 
-拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+C++读取文件,getline到换行,然后开始判断数据;比较蠢,但很简单;
+py读取文件,用group()分开,再用match正则匹配.
 
-处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
+先用第一种方法做了.会抽空补第二种.尴尬的是xTerm控制台输出的数据很">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ns(5):数据处理">
 <meta property="og:url" content="http://yoursite.com/2017/06/26/ns-5/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="令人痛苦的部分终于开始了:一共两步:
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…处理方式是写个脚本 比较舒服 但是慢摆在我面前有两条路:
 
-拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+C++读取文件,getline到换行,然后开始判断数据;比较蠢,但很简单;
+py读取文件,用group()分开,再用match正则匹配.
 
-处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
-<meta property="og:updated_time" content="2017-06-30T08:29:44.530Z">
+先用第一种方法做了.会抽空补第二种.尴尬的是xTerm控制台输出的数据很">
+<meta property="og:updated_time" content="2017-07-02T02:53:07.253Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(5):数据处理">
 <meta name="twitter:description" content="令人痛苦的部分终于开始了:一共两步:
+拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…处理方式是写个脚本 比较舒服 但是慢摆在我面前有两条路:
 
-拿到一个拓扑.topozoo上大把的graphml;但问题是:graphml怎么转txt…好一点处理方式是写个脚本 比较舒服 但是慢坏一点 人工呗…
+C++读取文件,getline到换行,然后开始判断数据;比较蠢,但很简单;
+py读取文件,用group()分开,再用match正则匹配.
 
-处理生成的数据R脚本处理trace.txt并画图.照着模板改就是了">
+先用第一种方法做了.会抽空补第二种.尴尬的是xTerm控制台输出的数据很">
 
     
     
@@ -106,17 +112,20 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#拿到一个拓扑"><span class="toc-number">1.</span> <span class="toc-text">拿到一个拓扑.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理生成的数据"><span class="toc-number">2.</span> <span class="toc-text">处理生成的数据</span></a></li></ol>
 		
 		</div>
 		
 		<p>令人痛苦的部分终于开始了:<br>一共两步:</p>
+<h2 id="拿到一个拓扑"><a href="#拿到一个拓扑" class="headerlink" title="拿到一个拓扑."></a>拿到一个拓扑.</h2><p>topozoo上大把的graphml;但问题是:graphml怎么转txt…<br>处理方式是写个脚本 比较舒服 但是慢<br>摆在我面前有两条路:</p>
 <ul>
-<li><p>拿到一个拓扑.<br>topozoo上大把的graphml;但问题是:graphml怎么转txt…<br>好一点处理方式是写个脚本 比较舒服 但是慢<br>坏一点 人工呗…</p>
-</li>
-<li><p>处理生成的数据<br>R脚本处理trace.txt并画图.照着模板改就是了</p>
-</li>
+<li>C++读取文件,getline到换行,然后开始判断数据;比较蠢,但很简单;</li>
+<li>py读取文件,用group()分开,再用match正则匹配.</li>
 </ul>
+<p>先用第一种方法做了.会抽空补第二种.<br>尴尬的是xTerm控制台输出的数据很难存哎<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">while(!fin.eof())</div><div class="line">&#123;</div><div class="line">    getline(fin,s1,&apos;\n&apos;);</div><div class="line">    const char *k,*h;</div><div class="line">    int t,id,i;</div><div class="line">    k = s1.c_str();</div><div class="line">    if(k[5]==&apos;n&apos;)</div><div class="line">    &#123;</div><div class="line">        id=k[15]==&apos;&quot;&apos;?k[14]-&apos;0&apos;:(k[14]-&apos;0&apos;)*10+(k[15]-&apos;0&apos;);</div><div class="line">        cout&lt;&lt;id&lt;&lt;&quot; &quot;;</div><div class="line">        getline(fin,s2,&apos;\n&apos;);</div><div class="line">        h=s2.c_str();</div><div class="line">        while(h[5]!=&apos;/&apos;)</div><div class="line">        &#123;</div><div class="line">            if(h[18]==&apos;2&apos;&amp;&amp;h[19]==&apos;9&apos;)</div><div class="line">            &#123;</div><div class="line">                i=22;</div><div class="line">                while(h[i]!=&apos;&lt;&apos;)</div><div class="line">                    printf(&quot;%c&quot;,h[i++]);</div><div class="line">                cout&lt;&lt;&quot;  &quot;;</div><div class="line">            &#125;</div><div class="line">            if(h[18]==&apos;3&apos;&amp;&amp;h[19]==&apos;3&apos;)</div><div class="line">            &#123;</div><div class="line">                i=22;</div><div class="line">                while(h[i]!=&apos;&lt;&apos;)</div><div class="line">                    printf(&quot;%c&quot;,h[i++]);</div><div class="line">            &#125;</div><div class="line">            getline(fin,s2,&apos;\n&apos;);</div><div class="line">            h=s2.c_str();</div><div class="line">        &#125;</div><div class="line">        cout&lt;&lt;endl;</div><div class="line">    &#125;</div><div class="line">    if(k[5]==&apos;e&apos;)</div><div class="line">    &#123;</div><div class="line">        if(k[19]==&apos;&quot;&apos;)</div><div class="line">        &#123;</div><div class="line">           printf(&quot;%c &quot;,k[18]);</div><div class="line">           t=k[30]==&apos;&quot;&apos;?k[29]-&apos;0&apos;:(k[29]-&apos;0&apos;)*10+(k[30]-&apos;0&apos;);</div><div class="line">        &#125;</div><div class="line">        else</div><div class="line">        &#123;</div><div class="line">            printf(&quot;%c%c &quot;,k[18],k[19]);</div><div class="line">            t=k[31]==&apos;&quot;&apos;?k[30]-&apos;0&apos;:(k[30]-&apos;0&apos;)*10+(k[31]-&apos;0&apos;);</div><div class="line">        &#125;</div><div class="line">        printf(&quot;%d\n&quot;,t);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后得到了chinanet的拓扑,,,有四条没有地理信息,看了眼是国际链路,干脆删了<br>因为Xterm的复制粘贴超级麻烦 掌握了新技能<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">g++ readtopo.cpp -o readtopo</div><div class="line">./readtopo</div></pre></td></tr></table></figure></p>
+<p>然后输入报错:<br>msg=”Invalid value for attribute set (DataRate) on ns3::PointToPointNetDevice”, file=../src/core/model/object-factory.cc, line=81<br>terminate called without an active exception<br>ns3数据速率的输入不可用 加了10Mbps果断过…<br>…<br>不是说了可以省略嘛!</p>
+<h2 id="处理生成的数据"><a href="#处理生成的数据" class="headerlink" title="处理生成的数据"></a>处理生成的数据</h2><p>R脚本处理trace.txt并画图.照着模板改就是了<br>从做这件事到现在 BOOST库 pyviz 进了多少坑 又加一个R<br>关于R的绝大多数资料都在讲统计学的梗..<br>大概看看就好 我想想怎么画图 考虑对照官网两个模板来理解了.<br>可是问题是 这个事情最难的地方根本就不是画图…<br>是:什么样的图 才能画出我要的结果???</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -166,7 +175,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#拿到一个拓扑"><span class="toc-number">1.</span> <span class="toc-text">拿到一个拓扑.</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#处理生成的数据"><span class="toc-number">2.</span> <span class="toc-text">处理生成的数据</span></a></li></ol>
  
   </div>
 

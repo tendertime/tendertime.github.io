@@ -17,7 +17,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/06/23/ns-4/index.html">
 <meta property="og:site_name" content="Vaisy's Blog">
 <meta property="og:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
-<meta property="og:updated_time" content="2017-06-30T08:20:50.765Z">
+<meta property="og:updated_time" content="2017-07-02T01:41:18.056Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(4)">
 <meta name="twitter:description" content="剩余步骤:1.caculate的结果输出,标明which i stores which j;2.producer处标记数据包的来源;3.consumer的请求zipf化.3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;4.在scenario处生成trace.txt 处理成图.(R语言脚本)/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,">
@@ -94,42 +94,32 @@
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">Contents</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么在forwarder处拿到自己的ID"><span class="toc-number">1.</span> <span class="toc-text">怎么在forwarder处拿到自己的ID</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么保存caculate的结果"><span class="toc-number">2.</span> <span class="toc-text">怎么保存caculate的结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#producer确定来源"><span class="toc-number">3.</span> <span class="toc-text">producer确定来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#consumer的zipf分布"><span class="toc-number">4.</span> <span class="toc-text">consumer的zipf分布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#先解决第一个事情…"><span class="toc-number">5.</span> <span class="toc-text">先解决第一个事情…</span></a></li></ol>
 		
 		</div>
 		
 		<p>剩余步骤:<br>1.caculate的结果输出,标明which i stores which j;<br>2.producer处标记数据包的来源;<br>3.consumer的请求zipf化.<br>3.forwarder的onDataUnsolicited 读取1的输出文件判断是否要存;<br>4.在scenario处生成trace.txt 处理成图.(R语言脚本)<br>/5.如果下一步还打算改进的话 那么请记得把3的步骤封装成缓存策略,目前是完全根据拓扑的</p>
 <p>一步一步来:</p>
-<ul>
-<li>怎么在forwarder处拿到自己的ID<br>forwarder拥有该节点的所有接口和表,同时实现管道.<br>但它有nametree作为FIB,PIT等等的索引结构.<br>观察了下都是这种结构<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NameTree&amp;</div><div class="line">getNameTree()</div><div class="line">&#123;</div><div class="line">  return m_nameTree;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
+<h2 id="怎么在forwarder处拿到自己的ID"><a href="#怎么在forwarder处拿到自己的ID" class="headerlink" title="怎么在forwarder处拿到自己的ID"></a>怎么在forwarder处拿到自己的ID</h2><p>forwarder拥有该节点的所有接口和表,同时实现管道.<br>但它有nametree作为FIB,PIT等等的索引结构.<br>观察了下都是这种结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">NameTree&amp;</div><div class="line">getNameTree()</div><div class="line">&#123;</div><div class="line">  return m_nameTree;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>返回值是NameTree引用,作为getNameTree的别名?<br>试着在forwarder.hpp加了getNodeID的功能 准备调用<br>注意记得加成员变量.<br>请注意在l3-protocol设置node的值</p>
-<ul>
-<li><p>怎么保存caculate的结果<br>vector<pair<int,int>&gt;写到txt</pair<int,int></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> std::ofstream fout;</div><div class="line"> fout.open(&quot;result.txt&quot;,std::ios_base::out);</div><div class="line"> if(fout.is_open())</div><div class="line"> &#123;</div><div class="line">  for(std::vector&lt;std::pair&lt;uint32_t,uint32_t&gt;&gt;::iterator i=results.begin();i!=results.end(); ++i)</div><div class="line">   &#123;</div><div class="line">     fout&lt;&lt;(*i).first&lt;&lt;(*i).second;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line">fout.close();</div></pre></td></tr></table></figure>
-</li>
-<li><p>producer确定来源<br>Error:class std::shared_ptr<ndn::data>’ has no member named ‘setTag’<br>在ndnSIM中有两种Tag，一个是ns3::ndn::Tag，这个节点可以加入data,但是只在节点内部;<br>另一种还有一个Tag是ns3::Tag，这个Tag可以加入packet中，它可以实现节点间的数据传递</ndn::data></p>
-</li>
-</ul>
+<h2 id="怎么保存caculate的结果"><a href="#怎么保存caculate的结果" class="headerlink" title="怎么保存caculate的结果"></a>怎么保存caculate的结果</h2><p>vector<pair<int,int>&gt;写到txt<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> std::ofstream fout;</div><div class="line"> fout.open(&quot;result.txt&quot;,std::ios_base::out);</div><div class="line"> if(fout.is_open())</div><div class="line"> &#123;</div><div class="line">  for(std::vector&lt;std::pair&lt;uint32_t,uint32_t&gt;&gt;::iterator i=results.begin();i!=results.end(); ++i)</div><div class="line">   &#123;</div><div class="line">     fout&lt;&lt;(*i).first&lt;&lt;(*i).second;</div><div class="line">   &#125;</div><div class="line"> &#125;</div><div class="line">fout.close();</div></pre></td></tr></table></figure></pair<int,int></p>
+<h2 id="producer确定来源"><a href="#producer确定来源" class="headerlink" title="producer确定来源"></a>producer确定来源</h2><p>Error:class std::shared_ptr<ndn::data>’ has no member named ‘setTag’<br>在ndnSIM中有两种Tag，一个是ns3::ndn::Tag，这个节点可以加入data,但是只在节点内部;<br>另一种还有一个Tag是ns3::Tag，这个Tag可以加入packet中，它可以实现节点间的数据传递</ndn::data></p>
 <p>但是在啃tag的时候我注意到了producer里有这样一段<br>      .AddAttribute(“Prefix”, “Prefix, for which producer has the data”, StringValue(“/“),<br>                    MakeNameAccessor(&amp;Producer::m_prefix), MakeNameChecker())<br>      .AddAttribute(<br>         “Postfix”,<br>         “Postfix that is added to the output data (e.g., for adding producer-uniqueness)”,<br>         StringValue(“/“), MakeNameAccessor(&amp;Producer::m_postfix), MakeNameChecker())</p>
 <p>postfix只是增强producer独特性,先不管了,但是prefix就足以标明身份…<br>所以我脑子确实有坑…</p>
-<ul>
-<li>consumer的<a href="https://en.wikipedia.org/wiki/Zipf&#39;s_law" target="_blank" rel="external">zipf分布</a><br>zipf的公式为P(r) = C / r^α;P(r)是内容出现的频率;r是频率出现的排名;<br>公式是这样m_Pcum[i] = m_Pcum[i - 1] + 1.0 / std::pow(i + m_q, m_s);<br>从ConsumerCbr继承;属性包括内容总数;q,s;<br>默认是0.7虽然我也不懂为什么…</li>
-</ul>
+<h2 id="consumer的zipf分布"><a href="#consumer的zipf分布" class="headerlink" title="consumer的zipf分布"></a>consumer的<a href="https://en.wikipedia.org/wiki/Zipf&#39;s_law" target="_blank" rel="external">zipf分布</a></h2><p>zipf的公式为P(r) = C / r^α;P(r)是内容出现的频率;r是频率出现的排名;<br>公式是这样m_Pcum[i] = m_Pcum[i - 1] + 1.0 / std::pow(i + m_q, m_s);<br>从ConsumerCbr继承;属性包括内容总数;q,s;<br>默认是0.7虽然我也不懂为什么…</p>
 <p>更奇怪的事情出现了<br>zipf分布出来自带%FE%0前缀…<br>一怒之下直接给producer加了%FE%0前缀来满足请求…<br>这个逻辑我也是不太懂<br>反正算是解决了…</p>
-<ul>
-<li>先解决第一个事情…<br>result.txt我能找到…<br>但特么每次都不一样完全就是个乱码好吧</li>
-</ul>
+<h2 id="先解决第一个事情…"><a href="#先解决第一个事情…" class="headerlink" title="先解决第一个事情…"></a>先解决第一个事情…</h2><p>result.txt我能找到…<br>但特么每次都不一样完全就是个乱码好吧</p>
 <p>弃疗了<br>直接用string把getline读出来 强行给了\n特征<br>成功了…</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">std::ifstream fin(&quot;result.txt&quot;);</div><div class="line">//fin.open(&quot;result.txt&quot;,std::ios_base::in);</div><div class="line">while(fin)</div><div class="line">&#123;</div><div class="line">  std::string xx,yy;</div><div class="line">  std::stringstream s;</div><div class="line">  getline(fin,xx,&apos; &apos;);</div><div class="line">  getline(fin,yy,&apos;\n&apos;);// xx should stores yy</div><div class="line">  const char *x=xx.c_str();// x为char型</div><div class="line">  //std::cout&lt;&lt;atol(x)&lt;&lt;&quot; &quot;&lt;&lt;m_NodeID&lt;&lt;std::endl;</div><div class="line">  if(atol(x)==m_NodeID)</div><div class="line">  &#123;</div><div class="line">    s.str(&quot;&quot;);</div><div class="line">    std::string prefix=&quot;/%FE%0&quot;+yy;</div><div class="line">    s&lt;&lt;data.getName();</div><div class="line">    if(s.str()==prefix)</div><div class="line">    &#123;</div><div class="line">      std::cout&lt;&lt;m_NodeID&lt;&lt;&quot;stores&quot;&lt;&lt;yy&lt;&lt;&quot;,which called&quot;&lt;&lt;prefix&lt;&lt;std::endl;</div><div class="line">      if (m_csFromNdnSim == nullptr)</div><div class="line">        m_cs.insert(data, true);</div><div class="line">      else</div><div class="line">        m_csFromNdnSim-&gt;Add(data.shared_from_this());</div><div class="line">      //break;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">fin.close();</div></pre></td></tr></table></figure>
-<p>然后还有一件事:<br>先分清楚onDataUnsolicited和onIncomingData<br>它逻辑是这样:如果PIT里有这个数据 我就先转了它 然后想想看要不要存<br>如果没人想要它 那我想想要不要存.</p>
+<p>然后还有一件事:<br>先分清楚onDataUnsolicited和onIncomingData<br>它逻辑是这样:如果PIT里有这个数据 我就先转了它 然后想想看要不要存<br>如果没人想要它 那onDataUnsolicited想想要不要存.</p>
 <p>记得把这个事儿注释掉.</p>
 <p>结果是对的.</p>
 <p>但是,,,cs_entry是空的…cs_trace也没有…</p>
 <p>我打算从头开始解决<br>因为我把forwarder和l3protocol恢复了都没用…</p>
 <p>所以现在考虑是软件包的问题<br>零零碎碎装了一大堆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"> sudo apt-get install gcc g++ python              </div><div class="line">sudo apt-get install gcc g++ python python-dev</div><div class="line">sudo apt-get install mercurial</div><div class="line">sudo apt-get install bzr</div><div class="line">sudo apt-get install gdb valgrind</div><div class="line">sudo apt-get install gsl-bin libgsl0-dev libgsl0ldbl</div><div class="line">sudo apt-get install flex bison libfl-dev</div><div class="line">sudo apt-get install g++ gcc</div><div class="line">sudo apt-get install tcpdump</div><div class="line">sudo apt-get install sqlite sqlite3 libsqlite3-dev</div><div class="line">sudo apt-get install libxml2 libxml2-dev</div><div class="line">sudo apt-get install libgtk2.0-0 libgtk2.0-dev</div><div class="line">sudo apt-get install vtun lxc</div><div class="line">sudo apt-get install uncrustify</div><div class="line">sudo apt-get install doxygen graphviz imagemagick </div><div class="line">sudo apt-get install texlive texlive-extra-utils texlive-latex-extra</div><div class="line">sudo apt-get install python-sphinx dia</div><div class="line">sudo apt-get install python-pygraphviz python-kiwi python-pygoocanvas libgoocanvas-dev</div><div class="line">sudo apt-get install libboost-signals-dev libboost-filesystem-dev</div><div class="line">sudo apt-get install openmpi-bin openmpi-doc libopenmpi-dev</div></pre></td></tr></table></figure></p>
 <p>并不知道谁有用…but it works</p>
+<p>然后这个时候cs_entry就出现了.<br>至于cs_trace那就是仿真场景没写好了,注意producer和consumer都只设置一次属性.</p>
+<p>然后我现在也不知道对了没…应该是对了吧…中心节点的缓存命中率明显比其他节点低<br>很对啊人家基本没有缓存的 尴尬的是–vis时的cs_entry大概不太对吧.</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -187,7 +177,7 @@
   <div id="toc" class="toc-aside">
   <strong class="toc-title">Contents</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么在forwarder处拿到自己的ID"><span class="toc-number">1.</span> <span class="toc-text">怎么在forwarder处拿到自己的ID</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#怎么保存caculate的结果"><span class="toc-number">2.</span> <span class="toc-text">怎么保存caculate的结果</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#producer确定来源"><span class="toc-number">3.</span> <span class="toc-text">producer确定来源</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#consumer的zipf分布"><span class="toc-number">4.</span> <span class="toc-text">consumer的zipf分布</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#先解决第一个事情…"><span class="toc-number">5.</span> <span class="toc-text">先解决第一个事情…</span></a></li></ol>
  
   </div>
 
