@@ -29,7 +29,7 @@ C++读取文件,getline到换行,然后开始判断数据;比较蠢,但很简单
 py读取文件,用group()分开,再用match正则匹配.
 
 先用第一种方法做了.会抽空补第二种.尴尬的是xTerm控制台输出的数据很">
-<meta property="og:updated_time" content="2017-07-03T03:59:47.551Z">
+<meta property="og:updated_time" content="2017-08-08T12:18:53.130Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(5):数据处理">
 <meta name="twitter:description" content="令人痛苦的部分终于开始了:一共两步:
@@ -131,6 +131,10 @@ py读取文件,用group()分开,再用match正则匹配.
 <h3 id="forwarder"><a href="#forwarder" class="headerlink" title="forwarder"></a>forwarder</h3><p>每次cache之后输出一下m_cs.size() 我自己再加一遍拿到总缓存size…<br>hit處查表咯(管用~)<br>务必注意:ndnsim有两套cs:<br>第一种setoldcontent,这个时候走m_csFromndnSIM,对应lookup,add,getsize<br>第二种setsize,setpolicy,这个时候走m_cs,对应find,insert,size</p>
 <p>然后发现之前有个重大失误:<br>prefix是%FE%+十六进制数… 直接改生成结果的地方.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">char buffer[2];</div><div class="line">sprintf(buffer,&quot;%02X&quot;,(*(dp[0].array.end()-1)).node-&gt;GetId());</div><div class="line">std::string str=buffer;</div><div class="line">fout&lt;&lt;dp[0].node-&gt;GetId()&lt;&lt;&quot; /%FE%&quot;&lt;&lt;str&lt;&lt;&quot; &quot;&lt;&lt;(*(dp[0].array.end()-1)).benefit&lt;&lt;std::endl;</div><div class="line">(*(dp[0].array.end()-1)).node-&gt;GetObject&lt;GlobalRouter&gt;()-&gt;AddLocalPrefix(make_shared&lt;Name&gt;(prefix));</div></pre></td></tr></table></figure></p>
 <p>跟着producer的setprefix也一起改.套路一样</p>
+<p>那么对于opt策略,我们已经拿到了所有数据.</p>
+<p>对于原先的策略,直接计算在某处拿到节约了多少吧.<br>就是感觉…我现在在用时延最大的套路…你想 每次缓存完都要去查一遍节约的那部分.<br>用来对比的策略是:简单cs;(条目有生存期或者数据包生存期先别管);概率cs;</p>
+<p>出了些问题:<br>此处应记录一次耍流氓:我把name-component的isNumberWithMarker结果强制判true了.<br>为了保护name的格式.它只允许插int,我为了补全插了string;<br>我怀疑是string后有’\0’导致判了单数 但看起来没有影响结果 应该是丢了(这么说来的话直接int数组不就好了)╮(╯▽╰)╭</p>
+<p>其实两次…还是为了好算…每个节点产生256个内容…为了16的整数次方…为了凑整…<br>本来以为会很容易 但是 zipf的事情和我们的预期不太一样 所以另开一篇</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -161,6 +165,14 @@ py读取文件,用group()分开,再用match正则匹配.
 	
 <nav class="article-nav clearfix">
  
+ <div class="prev" >
+ <a href="/2017/07/11/ns-6/" title="ns-6:跟zipf有关的一系列事故">
+  <strong>上一篇：</strong><br/>
+  <span>
+  ns-6:跟zipf有关的一系列事故</span>
+</a>
+</div>
+
 
 <div class="next">
 <a href="/2017/06/23/ns-4/"  title="ns(4)">
@@ -196,7 +208,11 @@ py读取文件,用group()分开,再用match正则匹配.
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ns/" title="ns">ns<sup>6</sup></a></li>
+				<li><a href="/tags/ns/" title="ns">ns<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>4</sup></a></li>
 			
 		
 		</ul>
@@ -222,8 +238,10 @@ py读取文件,用group()分开,再用match正则匹配.
     </ul>
 </div>
 
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=86 src="//music.163.com/outchain/player?type=2&id=27907433&auto=1&height=66"></iframe>
 </aside>
 </div>
+
     </div>
     <footer><div id="footer" >
 	
@@ -258,7 +276,7 @@ py读取文件,用group()分开,再用match正则匹配.
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
 		
 		<a href="/about" target="_blank" title="Vaisy">Vaisy</a>
 		

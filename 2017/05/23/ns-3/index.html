@@ -17,7 +17,7 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 对于结构体要用const_iterator,否则会有类型不一致
 过程转对象没反应过来吧…没有对象是调用不了方法的
 
-下一步解决拓扑">
+后来发觉代码写的">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ns(3)">
 <meta property="og:url" content="http://yoursite.com/2017/05/23/ns-3/index.html">
@@ -28,8 +28,8 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 对于结构体要用const_iterator,否则会有类型不一致
 过程转对象没反应过来吧…没有对象是调用不了方法的
 
-下一步解决拓扑">
-<meta property="og:updated_time" content="2017-06-26T04:38:42.957Z">
+后来发觉代码写的">
+<meta property="og:updated_time" content="2017-09-01T01:30:25.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ns(3)">
 <meta name="twitter:description" content="代码可以说是不太顺利的敲完了伪代码写一遍少一点 理出思路以后第一遍写了近百行 写完觉得艾玛这个地方有必要这样吗?然后第三遍的时候就十几行了.越来越觉得诶这个地方可以这样处理 这个参数不必要传敲完之后的常见病:
@@ -38,7 +38,7 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 对于结构体要用const_iterator,否则会有类型不一致
 过程转对象没反应过来吧…没有对象是调用不了方法的
 
-下一步解决拓扑">
+后来发觉代码写的">
 
     
     
@@ -122,6 +122,8 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 <li>对于结构体要用const_iterator,否则会有类型不一致</li>
 <li>过程转对象没反应过来吧…没有对象是调用不了方法的</li>
 </ul>
+<p>后来发觉代码写的有问题<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div></pre></td><td class="code"><pre><div class="line">void</div><div class="line">GlobalRoutingHelper::CalculateRoutes()</div><div class="line">&#123;</div><div class="line">  /**</div><div class="line">   * Implementation of route calculation is heavily based on Boost Graph Library</div><div class="line">   * See http://www.boost.org/doc/libs/1_49_0/libs/graph/doc/table_of_contents.html for more details</div><div class="line">   */</div><div class="line"></div><div class="line">  BOOST_CONCEPT_ASSERT((boost::VertexListGraphConcept&lt;boost::NdnGlobalRouterGraph&gt;));</div><div class="line">  BOOST_CONCEPT_ASSERT((boost::IncidenceGraphConcept&lt;boost::NdnGlobalRouterGraph&gt;));</div><div class="line">  </div><div class="line">  struct record&#123;</div><div class="line">    uint32_t benefit;</div><div class="line">    Ptr&lt;Node&gt; node;/*</div><div class="line">    bool operator&lt; (const record &amp;a)  const</div><div class="line">    &#123;</div><div class="line">      return benefit&lt;a.benefit;</div><div class="line">    &#125;*/</div><div class="line">  &#125;;//顺序排,便于删除操作. </div><div class="line"></div><div class="line">  struct calc&#123; </div><div class="line">    Ptr&lt;Node&gt; node;</div><div class="line">    std::vector&lt;record&gt; array;</div><div class="line">  &#125;;</div><div class="line">  std::vector&lt;record&gt; v;</div><div class="line">  std::vector&lt;uint32_t&gt; weigh;</div><div class="line">  //uint32_t num;</div><div class="line">  //for (NodeList::Iterator node = NodeList::Begin(),num=1; node != NodeList::End(); node++,num++)</div><div class="line">  struct res&#123;</div><div class="line">    uint32_t x,y,z;</div><div class="line">    bool operator&lt; (const res &amp;a)  const</div><div class="line">    &#123;</div><div class="line">      return z&gt;a.z;</div><div class="line">    &#125;</div><div class="line">  &#125;;//x mean source,y mean cache ,z mean benefit</div><div class="line">  </div><div class="line">  std::vector&lt;res&gt; result;</div><div class="line">  boost::NdnGlobalRouterGraph graph;</div><div class="line"></div><div class="line">  for (NodeList::Iterator node = NodeList::Begin(); node != NodeList::End(); node++) &#123;</div><div class="line">    Ptr&lt;GlobalRouter&gt; source = (*node)-&gt;GetObject&lt;GlobalRouter&gt;();</div><div class="line">    if (source == 0) &#123;</div><div class="line">      NS_LOG_DEBUG(&quot;Node &quot; &lt;&lt; (*node)-&gt;GetId() &lt;&lt; &quot; does not export GlobalRouter interface&quot;);</div><div class="line">      continue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    boost::DistancesMap distances;</div><div class="line">    boost::PredecessorsMap predecessors;</div><div class="line"></div><div class="line">    dijkstra_shortest_paths(graph, source,</div><div class="line">                            predecessor_map (boost::ref(predecessors))</div><div class="line">                              .distance_map(boost::ref(distances))</div><div class="line">                              .distance_inf(boost::WeightInf)</div><div class="line">                              .distance_zero(boost::WeightZero)</div><div class="line">                              .distance_compare(boost::WeightCompare())</div><div class="line">                              .distance_combine(boost::WeightCombine()));</div><div class="line">    </div><div class="line">    //init the weigh</div><div class="line">    weigh.clear();</div><div class="line">    v.clear();</div><div class="line">    for (NodeList::Iterator node = NodeList::Begin(); node != NodeList::End(); node++)</div><div class="line">      weigh.push_back(1);</div><div class="line">    </div><div class="line">    </div><div class="line">    Ptr&lt;L3Protocol&gt; L3protocol = (*node)-&gt;GetObject&lt;L3Protocol&gt;();</div><div class="line">    shared_ptr&lt;nfd::Forwarder&gt; forwarder = L3protocol-&gt;getForwarder();</div><div class="line"></div><div class="line">    NS_LOG_DEBUG(&quot;Reachability from Node: &quot; &lt;&lt; source-&gt;GetObject&lt;Node&gt;()-&gt;GetId());</div><div class="line">    for (const auto&amp; dist : distances) &#123;</div><div class="line">    //NS_LOG_DEBUG(dist.first-&gt;GetId()&lt;&lt;&quot;is&quot;&lt;&lt;dist.first-&gt;GetObject&lt;Node&gt; ()-&gt;GetId ());</div><div class="line">    //these value are different</div><div class="line"></div><div class="line">    </div><div class="line">    //get the distance</div><div class="line">    record buf;</div><div class="line">    buf.node=dist.first-&gt;GetObject&lt;Node&gt; ();</div><div class="line">    buf.benefit=std::get&lt;1&gt;(dist.second);</div><div class="line">    v.push_back(buf); </div><div class="line"></div><div class="line">    //get the value</div><div class="line">    ns3::Ptr&lt;ns3::ndn::GlobalRouter&gt; x=dist.first;</div><div class="line">    while(x-&gt;GetObject&lt;Node&gt; ()!=(*node))</div><div class="line">    &#123;</div><div class="line">      weigh[predecessors[x]-&gt;GetObject&lt;Node&gt; ()-&gt;GetId()]+=1;</div><div class="line">      x=predecessors[x];</div><div class="line">    &#125;</div><div class="line">    res u;</div><div class="line">    u.x=(*node)-&gt;GetId();</div><div class="line">    for(std::vector&lt;record&gt;::iterator x=v.begin();x!=v.end();x++)</div><div class="line">    &#123;</div><div class="line">      (*x).benefit*=weigh[((*x).node)-&gt;GetId()];</div><div class="line">      u.y=((*x).node)-&gt;GetId();</div><div class="line">      u.z=weigh[u.y];</div><div class="line">      result.push_back(u);</div><div class="line">    &#125;</div><div class="line">      </div><div class="line">/*</div><div class="line">    NS_LOG_DEBUG(dist.first-&gt;GetObject&lt;Node&gt; ()-&gt;GetId ()&lt;&lt;&quot;via&quot;</div><div class="line">                 &lt;&lt;predecessors[dist.first]-&gt;GetObject&lt;Node&gt; ()-&gt;GetId()&lt;&lt;&quot;with&quot;&lt;&lt;std::get&lt;1&gt;(dist.second));*/</div><div class="line">      if (dist.first == source)</div><div class="line">        continue;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  std::sort(result.begin(),result.end());</div><div class="line"></div><div class="line">  uint32_t a=weigh.size()*weigh.size()*1;</div><div class="line">  std::ofstream fout;</div><div class="line">  fout.open(&quot;result.txt&quot;,std::ios_base::out);</div><div class="line">  for(uint32_t i=0;i&lt;a;i++)</div><div class="line">  &#123;</div><div class="line">    std::stringstream s;</div><div class="line">    s.str(&quot;&quot;);</div><div class="line">    s&lt;&lt;result[i].x;</div><div class="line">    std::string prefix=s.str();</div><div class="line"></div><div class="line">    char buffer[2];</div><div class="line">    sprintf(buffer,&quot;%02X&quot;,result[i].y);</div><div class="line">    std::string str=buffer;</div><div class="line">    fout&lt;&lt;result[i].y&lt;&lt;&quot; /&quot;&lt;&lt;str&lt;&lt;&quot; &quot;&lt;&lt;result[i].z&lt;&lt;std::endl;</div><div class="line">  &#125;</div><div class="line">  fout.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>时隔太久 我自己都不记得了<br>benefit=weigh*benefit?</p>
 <p>下一步解决拓扑</p>
 <p>可能直接把欧洲那只大网的拓扑文件拿来用<br>还是打算先看一眼Orbis.下一步学习打算啃下来NFD,从Forwarder转发开始啃<br>最近太累了.我也不是铁打的啊.<br>Orbis的核心思想是提取某个拓扑的分布特征 然后得到大拓扑</p>
 <p>Forward啃下来了.但是我思路可能存在一些问题:我应该先啃forward!啊啊啊<br>之前完成的部分是依据拓扑结构计算出哪个节点存哪个内容.工作倒是不算白做.<br>考虑到真正仿真的顺序是:先引入拓扑图 然后计算路由 定义consumer和producer;然后才执行仿真</p>
@@ -202,7 +204,11 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/ns/" title="ns">ns<sup>6</sup></a></li>
+				<li><a href="/tags/ns/" title="ns">ns<sup>7</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/js/" title="js">js<sup>4</sup></a></li>
 			
 		
 		</ul>
@@ -228,8 +234,10 @@ iterator遍历时,记得要用*把数据从迭代器取出来
     </ul>
 </div>
 
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=180 height=86 src="//music.163.com/outchain/player?type=2&id=27907433&auto=1&height=66"></iframe>
 </aside>
 </div>
+
     </div>
     <footer><div id="footer" >
 	
@@ -264,7 +272,7 @@ iterator遍历时,记得要用*把数据从迭代器取出来
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2017 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2018 
 		
 		<a href="/about" target="_blank" title="Vaisy">Vaisy</a>
 		
